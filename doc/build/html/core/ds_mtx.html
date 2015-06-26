@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Dense Matrix &mdash; ARock 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="ARock 0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Matrices and Linear Algebra" href="../core.html"/>
+        <link rel="next" title="Sparse Vector" href="sp_vec.html"/>
+        <link rel="prev" title="Dense Vector" href="ds_vec.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> ARock</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#license-and-copyright">License and copyright</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../build.html">Build package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../build.html#download-arock">Download ARock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build.html#building-arock">Building ARock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build.html#testing-the-installation">Testing the installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../core.html">Matrices and Linear Algebra</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ds_vec.html">Dense Vector</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Dense Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sp_vec.html">Sparse Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sp_mtx.html">Sparse Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algebra.html">Linear Algebra</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../equations.html">Equation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/linear.html">Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/nonlinear.html">Nonlinear equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/ode.html">ODE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/pde.html">PDE</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../optimization.html">Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../opt/regression.html">Regularized Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../opt/consensus.html">Consensus Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../opt/decentralize.html">Decentralized Optimization</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">ARock</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../core.html">Matrices and Linear Algebra</a> &raquo;</li>
+      
+    <li>Dense Matrix</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/core/ds_mtx.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="dense-matrix">
+<h1>Dense Matrix<a class="headerlink" href="#dense-matrix" title="Permalink to this headline">¶</a></h1>
+<p>The <tt class="xref cpp cpp-type docutils literal"><span class="pre">Matrix</span></tt> class for storing dense matices.
+Its purpose is to provide convenient mechanisms for performing basic matrix
+operations, such as constructing the matrix, retrieving the size, seting the value
+of a given index pair <span class="math">\((i, j)\)</span>. The precision of the entires are double.</p>
+<p>An example of generating an <span class="math">\(m x n\)</span> matrix of real double-precision numbers with
+value 3.14 is the following</p>
+<blockquote>
+<div><div class="highlight-cpp"><div class="highlight"><pre><span class="n">Matrix</span> <span class="nf">x</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The underlying data storage for <tt class="xref cpp cpp-type docutils literal"><span class="pre">Matrix</span></tt> is simply
+<tt class="xref cpp cpp-type docutils literal"><span class="pre">std::vector</span></tt>.</p>
+<dl class="class">
+<dt id="Matrix">
+<em class="property">class </em><tt class="descname">Matrix</tt><a class="headerlink" href="#Matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>The goal is for the <cite>Matrix</cite> class to support file IO with the matrix
+market format.</p>
+<p class="rubric">Constructors and destructors</p>
+<dl class="function">
+<dt id="Matrix::Matrix">
+ <tt class="descname">Matrix</tt><big>(</big><big>)</big><a class="headerlink" href="#Matrix::Matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>This simply creates a default empty matrix.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix::Matrix__i.i">
+ <tt class="descname">Matrix</tt><big>(</big>int <em>m</em>, int <em>n</em><big>)</big><a class="headerlink" href="#Matrix::Matrix__i.i" title="Permalink to this definition">¶</a></dt>
+<dd><p>A matrix of size <span class="math">\(m x n\)</span> is created. It allocates memory, and initializes the value to 0.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix::Matrix__i.i.double">
+ <tt class="descname">Matrix</tt><big>(</big>int <em>m</em>, int <em>n</em>, double <em>val</em><big>)</big><a class="headerlink" href="#Matrix::Matrix__i.i.double" title="Permalink to this definition">¶</a></dt>
+<dd><p>A matrix of size <span class="math">\(m x n\)</span> is created. It allocates memory, and initializes the value to
+<tt class="xref cpp cpp-type docutils literal"><span class="pre">val</span></tt>.</p>
+</dd></dl>
+
+<p class="rubric">Member functions for basics</p>
+<dl class="function">
+<dt id="Matrix::rowsC">
+size_t <tt class="descname">rows</tt><big>(</big><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix::rowsC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of rows of the matrix.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix::colsC">
+size_t <tt class="descname">cols</tt><big>(</big><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix::colsC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of cols of the matrix.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix::nnzC">
+size_t <tt class="descname">nnz</tt><big>(</big><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix::nnzC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of nonzeros in the matrix.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix::resize__s.s">
+void <tt class="descname">resize</tt><big>(</big>size_t <em>m_</em>, size_t <em>n_</em><big>)</big><a class="headerlink" href="#Matrix::resize__s.s" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resize the matrix to size <span class="math">\(m_ x n_\)</span>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix::call-operator__s.s">
+double&amp; <tt class="descname">operator()</tt><big>(</big>size_t <em>i</em>, size_t <em>j</em><big>)</big><a class="headerlink" href="#Matrix::call-operator__s.s" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrive the <span class="math">\((i, j)\)</span> th entry of the matrix.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix::call-operator__s.sC">
+const double&amp; <tt class="descname">operator()</tt><big>(</big>size_t <em>i</em>, size_t <em>j</em><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix::call-operator__s.sC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrive the <span class="math">\((i, j)\)</span> th entry of the matrix.</p>
+</dd></dl>
+
+<p class="rubric">Member functions for file I/O</p>
+<dl class="function">
+<dt id="Matrix::read__isR">
+void <tt class="descname">read</tt><big>(</big>std::istream&amp; <em>in</em><big>)</big><a class="headerlink" href="#Matrix::read__isR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read  data from input stream and save the data as a Matrix.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix::write__osR">
+void <tt class="descname">write</tt><big>(</big>std::ostream&amp; <em>out</em><big>)</big><a class="headerlink" href="#Matrix::write__osR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a Matrix to a out stream with matrix market format.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sp_vec.html" class="btn btn-neutral float-right" title="Sparse Vector">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ds_vec.html" class="btn btn-neutral" title="Dense Vector"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Zhimin Peng, Yangyang Xu, Ming Yan, Wotao Yin.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

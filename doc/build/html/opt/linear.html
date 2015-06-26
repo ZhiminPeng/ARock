@@ -1,0 +1,348 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Linear Equations &mdash; ARock 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="ARock 0.1 documentation" href="../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> ARock</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#license-and-copyright">License and copyright</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../build.html">Build package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../build.html#download-arock">Download ARock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build.html#building-arock">Building ARock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build.html#testing-the-installation">Testing the installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../core.html">Matrices and Linear Algebra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../core/ds_vec.html">Dense Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/ds_mtx.html">Dense Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/sp_vec.html">Sparse Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/sp_mtx.html">Sparse Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/algebra.html">Linear Algebra</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../equations.html">Equation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/linear.html">Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/nonlinear.html">Nonlinear equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/ode.html">ODE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/pde.html">PDE</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../optimization.html">Optimization</a><ul class="simple">
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">ARock</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Linear Equations</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/opt/linear.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="linear-equations">
+<h1>Linear Equations<a class="headerlink" href="#linear-equations" title="Permalink to this headline">¶</a></h1>
+<p>The parallel asynchronous Jacobi method aimed at solving the following linear equation,</p>
+<div class="math">
+\[A x= b,\]</div>
+<p>where A is a non-singular matrix, and its diagonal entries are nonzero. Let <span class="math">\(M = D^{-1} (L + U)\)</span>, where <span class="math">\(D, L, U\)</span> are the
+diagonal matrix, strict lower triangular matrix and strict upper triangular matrix of <span class="math">\(A\)</span>. To ensure the convergence, we need to require <span class="math">\(\|M\|_2 \leq 1\)</span>.</p>
+<div class="section" id="data-preparation">
+<h2>Data preparation<a class="headerlink" href="#data-preparation" title="Permalink to this headline">¶</a></h2>
+<p>First, you will need to save you matrix <span class="math">\(A\)</span> and vector <span class="math">\(b\)</span> as the <a class="reference external" href="http://math.nist.gov/MatrixMarket/formats.html#MMformat">Matrix Market format</a>. Note that the matrix can be sparse of dense, <span class="math">\(b\)</span> is a dense vector. You can use the provided <a class="reference external" href="http://math.nist.gov/MatrixMarket/mmio-c.html">C</a>, <a class="reference external" href="http://math.nist.gov/MatrixMarket/mmio/matlab/mmiomatlab.html">Matlab</a> or <a class="reference external" href="http://docs.scipy.org/doc/scipy/reference/tutorial/io.html">Python</a> functions to save your data as the required format.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>In the build folder, there is a executable file called jacobi. You can use this to solve your linear equations. The usage for the executable file is the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>The usage for jacobi solver is:
+           ./jacobi [options]
+             -data       &lt; matrix market file for A &gt;
+             -label      &lt; matrix market file for b &gt;
+             -is_sparse  &lt; if the data format is sparse or not. default: 1. &gt;
+             -nthread    &lt; total number of threads, default: 1. &gt;
+             -epoch      &lt; total number of epoch, default: 10. &gt;
+             -step_size  &lt; step size, default: 1. &gt;
+             -block_size &lt; block size, default: 10. &gt;
+             -flag       &lt; flag for output, default: 0. &gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>In the test folder, there is a dense dataset (ds_A.mtx, ds_b.mtx) and a sparse dataset (sp_A.mtx, sp_b.mtx).
+To run the code for the dense data, you can use the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre>../bin/jacobi -data ds_A.mtx -label ds_b.mtx -epoch 10000 -is_sparse 0 -nthread 2
+</pre></div>
+</div>
+<p>You can expect to get the output similar to the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>% start parallel ayn to solve linear equation
+---------------------------------------------
+The size of the problem is 100
+---------------------------------------------
+      # cores        time(s)      ||Ax -b||
+            1       1.06e-01       3.20e-01
+            2       7.16e-02       3.27e-01
+---------------------------------------------
+</pre></div>
+</div>
+<p>To run the code for the sparse data, you can use the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre>../bin/jacobi -data sp_A.mtx -label sp_b.mtx -epoch 1000 -is_sparse 1 -nthread 2
+</pre></div>
+</div>
+<p>You can expect to get the output similar to the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>% start ARock for solving linear equation
+---------------------------------------------
+The size of the problem is 100
+---------------------------------------------
+      # cores        time(s)      ||Ax -b||
+            1       1.86e-02       1.33e-15
+            2       1.16e-02       1.37e-15
+---------------------------------------------
+</pre></div>
+</div>
+</div>
+<div class="section" id="provided-solvers">
+<h2>Provided solvers<a class="headerlink" href="#provided-solvers" title="Permalink to this headline">¶</a></h2>
+<p>The following is a list of solvers provided by the ARock package.</p>
+<blockquote>
+<div><dl class="function">
+<dt id="old_jacobi__TR.VectorR.VectorR.ParametersR">
+void <tt class="descname">old_jacobi</tt><big>(</big>T&amp; <em>A</em>, Vector&amp; <em>b</em>, Vector&amp; <em>x</em>, Parameters&amp; <em>para</em><big>)</big><a class="headerlink" href="#old_jacobi__TR.VectorR.VectorR.ParametersR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This an implementation of the old asynchronous Jacobi method proposed by D. Chazan and  W. Miranker in their paper <a class="reference external" href="http://www.sciencedirect.com/science/article/pii/0024379569900287">Chaotic relaxation</a>. The input are the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>/******************************************************
+*  Old Jacobi method from the 1965&#39;s paper.
+*
+* Input:
+*      A -- the target data matrix
+*           (Matrix, SpMatx)
+*      b -- the vector b
+*           (Vector)
+*      x -- unknowns, initialized to a zero vector
+*           (Vector)
+*   para -- parameters for the algorithm
+*           (struct)
+*      para.MAX_EPOCH -- the maximum number of epochs
+*                        (int)
+*      para.flag      -- flag for the output, 0 means
+*                        no output, 1 means print the
+*                        residual per 10 epochs.
+*                        (bool)
+* Output -- (none)
+******************************************************/
+</pre></div>
+</div>
+<dl class="function">
+<dt id="new_jacobi__TR.VectorR.VectorR.ParametersR">
+void <tt class="descname">new_jacobi</tt><big>(</big>T&amp; <em>A</em>, Vector&amp; <em>b</em>, Vector&amp; <em>x</em>, Parameters&amp; <em>para</em><big>)</big><a class="headerlink" href="#new_jacobi__TR.VectorR.VectorR.ParametersR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This is an implementation of our ARock method for solving linear equations. The input are the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>/******************************************************
+*  solve a linear equation Ax = b with ARock algorithm
+*
+* Input:
+*      A -- the target data matrix
+*           (Matrix, SpMatx)
+*      b -- the vector b
+*           (Vector)
+*      x -- unknowns, initialized to a zero vector
+*           (Vector)
+*   para -- parameters for the algorithm
+*           (struct)
+*      para.MAX_EPOCH -- the maximum number of epochs
+*                        (int)
+*      para.block_size -- the size of block of coordinates
+*                         default is 20.
+*                        (int)
+*      para.step_size -- the step size, default is 1.
+*                        (double)
+*      para.flag      -- flag for the output, 0 means
+*                        no output, 1 means print the
+*                        residual per 10 epochs.
+*                        (bool)
+* Output -- (none)
+******************************************************/
+</pre></div>
+</div>
+<dl class="function">
+<dt id="syn_jacobi__TR.VectorR.VectorR.ParametersR">
+void <tt class="descname">syn_jacobi</tt><big>(</big>T&amp; <em>A</em>, Vector&amp; <em>b</em>, Vector&amp; <em>x</em>, Parameters&amp; <em>para</em><big>)</big><a class="headerlink" href="#syn_jacobi__TR.VectorR.VectorR.ParametersR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This is an implementation of for the synchronous Jacobi method for solving linear equations. The input are the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>/******************************************************
+* solve a linear equation Ax = b with parallel Jacobi
+* method. The iteration are synchronized after each
+* epoch.
+*
+* Input:
+*      A -- the target data matrix
+*           (Matrix, SpMatx)
+*      b -- the vector b
+*           (Vector)
+*      x -- unknowns, initialized to a zero vector
+*           (Vector)
+*   para -- parameters for the algorithm
+*           (struct)
+*      para.MAX_EPOCH -- the maximum number of epochs
+*                        (int)
+*      para.flag      -- flag for the output, 0 means
+*                        no output, 1 means print the
+*                        residual per 10 epochs.
+*                        (bool)
+* Output -- (none)
+******************************************************/
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Zhimin Peng, Yangyang Xu, Ming Yan, Wotao Yin.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+Linear Equations
+=================
+The parallel asynchronous Jacobi method aimed at solving the following linear equation,
+
+.. math::
+   A x= b,
+
+where A is a non-singular matrix, and its diagonal entries are nonzero. Let :math:`M = D^{-1} (L + U)`, where :math:`D, L, U` are the
+diagonal matrix, strict lower triangular matrix and strict upper triangular matrix of :math:`A`. To ensure the convergence, we need to require :math:`\|M\|_2 \leq 1`.
+
+Data preparation
+-----------------
+First, you will need to save you matrix :math:`A` and vector :math:`b` as the `Matrix Market format <http://math.nist.gov/MatrixMarket/formats.html#MMformat>`_. Note that the matrix can be sparse of dense, :math:`b` is a dense vector. You can use the provided `C <http://math.nist.gov/MatrixMarket/mmio-c.html>`_, `Matlab <http://math.nist.gov/MatrixMarket/mmio/matlab/mmiomatlab.html>`_ or `Python <http://docs.scipy.org/doc/scipy/reference/tutorial/io.html>`_ functions to save your data as the required format.
+
+Usage
+---------
+In the build folder, there is a executable file called jacobi. You can use this to solve your linear equations. The usage for the executable file is the following::
+
+  The usage for jacobi solver is: 
+             ./jacobi [options] 
+               -data       < matrix market file for A >
+               -label      < matrix market file for b > 
+               -is_sparse  < if the data format is sparse or not. default: 1. > 
+               -nthread    < total number of threads, default: 1. > 
+               -epoch      < total number of epoch, default: 10. > 
+               -step_size  < step size, default: 1. > 
+               -block_size < block size, default: 10. > 
+               -flag       < flag for output, default: 0. >
+
+  
+Example
+-----------
+In the test folder, there is a dense dataset (ds_A.mtx, ds_b.mtx) and a sparse dataset (sp_A.mtx, sp_b.mtx).
+To run the code for the dense data, you can use the following command::
+
+  ../bin/jacobi -data ds_A.mtx -label ds_b.mtx -epoch 10000 -is_sparse 0 -nthread 2
+  
+You can expect to get the output similar to the following::
+
+  % start parallel ayn to solve linear equation
+  ---------------------------------------------
+  The size of the problem is 100
+  ---------------------------------------------
+        # cores        time(s)      ||Ax -b||
+              1       1.06e-01       3.20e-01
+              2       7.16e-02       3.27e-01
+  ---------------------------------------------
+
+
+To run the code for the sparse data, you can use the following command::
+
+  ../bin/jacobi -data sp_A.mtx -label sp_b.mtx -epoch 1000 -is_sparse 1 -nthread 2
+  
+You can expect to get the output similar to the following::
+
+  % start ARock for solving linear equation
+  ---------------------------------------------
+  The size of the problem is 100
+  ---------------------------------------------
+        # cores        time(s)      ||Ax -b||
+              1       1.86e-02       1.33e-15
+              2       1.16e-02       1.37e-15
+  ---------------------------------------------
+
+  
+
+
+Provided solvers
+------------------
+The following is a list of solvers provided by the ARock package.
+
+	    
+   .. cpp:function:: void old_jacobi(T& A, Vector& b, Vector& x, Parameters& para)
+
+   This an implementation of the old asynchronous Jacobi method proposed by D. Chazan and  W. Miranker in their paper `Chaotic relaxation <http://www.sciencedirect.com/science/article/pii/0024379569900287>`_. The input are the following::
+
+     /******************************************************
+     *  Old Jacobi method from the 1965's paper.
+     *
+     * Input:
+     *      A -- the target data matrix
+     *           (Matrix, SpMatx)
+     *      b -- the vector b
+     *           (Vector)
+     *      x -- unknowns, initialized to a zero vector
+     *           (Vector)
+     *   para -- parameters for the algorithm
+     *           (struct)
+     *      para.MAX_EPOCH -- the maximum number of epochs
+     *                        (int)
+     *      para.flag      -- flag for the output, 0 means
+     *                        no output, 1 means print the
+     *                        residual per 10 epochs.
+     *                        (bool)
+     * Output -- (none)
+     ******************************************************/
+
+     
+   .. cpp:function:: void new_jacobi(T& A, Vector& b, Vector& x, Parameters& para)
+
+   This is an implementation of our ARock method for solving linear equations. The input are the following::
+	
+     /******************************************************
+     *  solve a linear equation Ax = b with ARock algorithm
+     *
+     * Input:
+     *      A -- the target data matrix
+     *           (Matrix, SpMatx)
+     *      b -- the vector b
+     *           (Vector)
+     *      x -- unknowns, initialized to a zero vector
+     *           (Vector)
+     *   para -- parameters for the algorithm
+     *           (struct)
+     *      para.MAX_EPOCH -- the maximum number of epochs
+     *                        (int)
+     *      para.block_size -- the size of block of coordinates
+     *                         default is 20.
+     *                        (int)
+     *      para.step_size -- the step size, default is 1.
+     *                        (double)
+     *      para.flag      -- flag for the output, 0 means
+     *                        no output, 1 means print the
+     *                        residual per 10 epochs.
+     *                        (bool)
+     * Output -- (none)
+     ******************************************************/
+
+
+   .. cpp:function:: void syn_jacobi(T& A, Vector& b, Vector& x, Parameters& para)
+
+   This is an implementation of for the synchronous Jacobi method for solving linear equations. The input are the following::
+	
+     /******************************************************
+     * solve a linear equation Ax = b with parallel Jacobi
+     * method. The iteration are synchronized after each 
+     * epoch.
+     *
+     * Input:
+     *      A -- the target data matrix
+     *           (Matrix, SpMatx)
+     *      b -- the vector b
+     *           (Vector)
+     *      x -- unknowns, initialized to a zero vector
+     *           (Vector)
+     *   para -- parameters for the algorithm
+     *           (struct)
+     *      para.MAX_EPOCH -- the maximum number of epochs
+     *                        (int)
+     *      para.flag      -- flag for the output, 0 means
+     *                        no output, 1 means print the
+     *                        residual per 10 epochs.
+     *                        (bool)
+     * Output -- (none)
+     ******************************************************/
+
+
+     
+
+      
+
+
+      

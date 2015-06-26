@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Introduction &mdash; ARock 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="ARock 0.1 documentation" href="index.html"/>
+        <link rel="next" title="Build package" href="build.html"/>
+        <link rel="prev" title="Welcome to ARock’s documentation!" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> ARock</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#license-and-copyright">License and copyright</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="build.html">Build package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="build.html#download-arock">Download ARock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build.html#building-arock">Building ARock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build.html#testing-the-installation">Testing the installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Matrices and Linear Algebra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core/ds_vec.html">Dense Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/ds_mtx.html">Dense Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/sp_vec.html">Sparse Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/sp_mtx.html">Sparse Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/algebra.html">Linear Algebra</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="equations.html">Equation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="eqn/linear.html">Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eqn/nonlinear.html">Nonlinear equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eqn/ode.html">ODE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eqn/pde.html">PDE</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="optimization.html">Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="opt/regression.html">Regularized Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opt/consensus.html">Consensus Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opt/decentralize.html">Decentralized Optimization</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">ARock</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/intro.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>ARock is an asynchronous parallel C++ library for solving equations and optimization problems on shared memory systems. The package is based on the <a class="reference external" href="http://eigen.tuxfamily.org/index.php?title=Main_Page">Eigen</a> Library for matrix and vector operations. OpenMP is used for parallelization. ARock includes async-parallel implementation of</p>
+<blockquote>
+<div><ul class="simple">
+<li>Relaxed Jacobi method for solving linear equations (coming soon...);</li>
+<li>Newton method for solving nonlinear equations (coming soon...);</li>
+<li>Operator splitting method for minimizing regularized empirical risk minimization problems (LASSO, logistic regression);</li>
+<li>Alternating direction method of multipliers (ADMM) for consensus and decentralized optimization problems (coming soon...).</li>
+</ul>
+</div></blockquote>
+<p>ARock currently supports C++ interface. Python, Julia and Matlab interfaces are under development.</p>
+</div>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Functioning C++ compilers (<a class="reference external" href="https://www.gnu.org/software/gcc/releases.html">gcc</a> )</li>
+<li><a class="reference external" href="https://www.gnu.org/software/make/">GNU make</a></li>
+</ul>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<table class="docutils citation" frame="void" id="arock2015" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[ARock2015]</td><td>Zhimin Peng, Yangyang Xu, Ming Yan, Wotao Yin, <em>ARock: an Algorithmic Framework for Asynchronous Parallel Coordinate Updates</em>,  arXiv preprint arXiv:1506.02396 (2015)</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="license-and-copyright">
+<h2>License and copyright<a class="headerlink" href="#license-and-copyright" title="Permalink to this headline">¶</a></h2>
+<p>Except for the Eigen library header files, All files distributed with ARock are made available under the <a class="reference external" href="http://www.opensource.org/licenses/bsd-license.php">New BSD license</a>,
+which states:</p>
+<div class="highlight-python"><div class="highlight"><pre>Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+ - Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+
+ - Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+ - Neither the name of the owner nor the names of its contributors
+   may be used to endorse or promote products derived from this software
+   without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+</pre></div>
+</div>
+<p>Note that Eigen is <a class="reference external" href="https://www.mozilla.org/MPL/2.0/">MPL2-licensed</a>.</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="build.html" class="btn btn-neutral float-right" title="Build package">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to ARock’s documentation!"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Zhimin Peng, Yangyang Xu, Ming Yan, Wotao Yin.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

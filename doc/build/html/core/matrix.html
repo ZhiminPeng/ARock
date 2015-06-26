@@ -1,0 +1,555 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Matrix &mdash; ARock 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="ARock 0.1 documentation" href="../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> ARock</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#license-and-copyright">License and copyright</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../build.html">Build package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../build.html#building-elemental">Building Elemental</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build.html#testing-the-installation">Testing the installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../core.html">Matrices and Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../equations.html">Equation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../equations.html#intro">Intro</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../equations.html#use">Use</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../optimization.html">Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../optimization.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization.html#usage">Usage</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">ARock</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Matrix</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/core/matrix.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="matrix">
+<h1>Matrix<a class="headerlink" href="#matrix" title="Permalink to this headline">¶</a></h1>
+<p>The <tt class="xref cpp cpp-type docutils literal"><span class="pre">Matrix&lt;T&gt;</span></tt> class is the building of the library:
+its purpose is to provide convenient mechanisms for performing basic matrix
+manipulations, such as setting and querying individual matrix entries,
+without giving up compatibility with interfaces such as BLAS and LAPACK,
+which assume column-major storage.</p>
+<p>An example of generating an <span class="math">\(m \times n\)</span> matrix of real double-precision
+numbers where the <span class="math">\((i,j)\)</span> entry is equal to <span class="math">\(i-j\)</span> would be:</p>
+<blockquote>
+<div><div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include &quot;El.hpp&quot;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">El</span><span class="p">;</span>
+<span class="p">...</span>
+<span class="n">Matrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">A</span><span class="p">(</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="p">);</span>
+<span class="k">for</span><span class="p">(</span> <span class="n">Int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span> <span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span> <span class="n">Int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">m</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+        <span class="n">A</span><span class="p">.</span><span class="n">Set</span><span class="p">(</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="kt">double</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="p">)</span> <span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>whereas the complex double-precision equivalent could use <tt class="xref cpp cpp-type docutils literal"><span class="pre">Complex&lt;double&gt;</span></tt>, which is currently a typedef for <tt class="docutils literal"><span class="pre">std::complex&lt;double&gt;</span></tt>.</p>
+<p>The underlying data storage for <tt class="xref cpp cpp-type docutils literal"><span class="pre">Matrix&lt;T&gt;</span></tt> is simply a contiguous
+buffer that stores entries in a column-major fashion with a <em>leading
+dimension</em> which is only required to be at least as large as the height of the
+matrix (so that entry <span class="math">\((i,j)\)</span> is located at position <tt class="docutils literal"><span class="pre">i+j*ldim</span></tt>).
+For modifiable instances of the <tt class="xref cpp cpp-type docutils literal"><span class="pre">Matrix&lt;T&gt;</span></tt> class, the routine
+<tt class="xref cpp cpp-type docutils literal"><span class="pre">Matrix&lt;T&gt;::Buffer</span></tt> returns a pointer to the underlying
+buffer, while <tt class="xref cpp cpp-type docutils literal"><span class="pre">Matrix&lt;T&gt;::LDim</span></tt> returns the leading
+dimension; these two routines could be used to directly perform the equivalent
+of the first code sample as follows:</p>
+<blockquote>
+<div><div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include &quot;El.hpp&quot;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">El</span><span class="p">;</span>
+<span class="p">...</span>
+<span class="n">Matrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">A</span><span class="p">(</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="p">);</span>
+<span class="kt">double</span><span class="o">*</span> <span class="n">buffer</span> <span class="o">=</span> <span class="n">A</span><span class="p">.</span><span class="n">Buffer</span><span class="p">();</span>
+<span class="k">const</span> <span class="n">Int</span> <span class="n">ldim</span> <span class="o">=</span> <span class="n">A</span><span class="p">.</span><span class="n">LDim</span><span class="p">();</span>
+<span class="k">for</span><span class="p">(</span> <span class="n">Int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span> <span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span> <span class="n">Int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">m</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+        <span class="n">buffer</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="o">*</span><span class="n">ldim</span><span class="p">]</span> <span class="o">=</span> <span class="kt">double</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>For immutable instances of the <tt class="xref cpp cpp-type docutils literal"><span class="pre">Matrix&lt;T&gt;</span></tt> class, a <tt class="docutils literal"><span class="pre">const</span></tt> pointer
+to the underlying data can similarly be returned with a call to
+<a class="reference internal" href="#Matrix:T:::LockedBufferC" title="Matrix&lt;T&gt;::LockedBuffer"><tt class="xref cpp cpp-func docutils literal"><span class="pre">Matrix&lt;T&gt;::LockedBuffer()</span></tt></a>.
+In addition, a (<tt class="docutils literal"><span class="pre">const</span></tt>) pointer to the place in the
+(<tt class="docutils literal"><span class="pre">const</span></tt>) buffer where entry <span class="math">\((i,j)\)</span> resides can be easily retrieved
+with a call to <a class="reference internal" href="#Matrix:T:::Buffer" title="Matrix&lt;T&gt;::Buffer"><tt class="xref cpp cpp-func docutils literal"><span class="pre">Matrix&lt;T&gt;::Buffer()</span></tt></a> or
+<a class="reference internal" href="#Matrix:T:::LockedBufferC" title="Matrix&lt;T&gt;::LockedBuffer"><tt class="xref cpp cpp-func docutils literal"><span class="pre">Matrix&lt;T&gt;::LockedBuffer()</span></tt></a>.</p>
+<p>It is also important to be able to create matrices which are simply <em>views</em>
+of existing (sub)matrices. In general, to view the submatrix with row indices
+<span class="math">\([\text{iBeg},\text{iEnd}]\)</span> and column indices
+<span class="math">\([\text{jBeg},\text{jEnd}]\)</span>, one can use a statement of the form</p>
+<blockquote>
+<div><div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include &quot;El.hpp&quot;</span>
+<span class="p">...</span>
+<span class="k">auto</span> <span class="n">ASub</span> <span class="o">=</span> <span class="n">A</span><span class="p">(</span> <span class="n">IR</span><span class="p">(</span><span class="n">iBeg</span><span class="p">,</span><span class="n">iEnd</span><span class="p">),</span> <span class="n">IR</span><span class="p">(</span><span class="n">jBeg</span><span class="p">,</span><span class="n">jEnd</span><span class="p">)</span> <span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="class">
+<dt id="Matrix:T:">
+<em class="property">class </em><tt class="descname">Matrix&lt;T&gt;</tt><a class="headerlink" href="#Matrix:T:" title="Permalink to this definition">¶</a></dt>
+<dd><p>The goal is for the <cite>Matrix</cite> class to support any datatype <cite>T</cite> which
+supports both addition and multiplication and has the associated identities
+(that is, when the datatype <cite>T</cite> is a <em>ring</em>). While there are several
+barriers to reaching this goal, it is important to keep in mind that, in
+addition to <cite>T</cite> being allowed to be a real or complex
+(single- or double-precision) floating-point type, signed integers
+are also supported.</p>
+<p class="rubric">Constructors and destructors</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Many of the following constructors have the default parameter
+<tt class="docutils literal"><span class="pre">bool</span> <span class="pre">fixed=false</span></tt>, which can be changed to <tt class="docutils literal"><span class="pre">true</span></tt> in order to
+produce a <cite>Matrix</cite> whose entries can be modified, but the matrix&#8217;s
+dimensions cannot. This is useful for the <tt class="xref cpp cpp-type docutils literal"><span class="pre">DistMatrix&lt;T&gt;</span></tt>
+class, which contains a local <tt class="xref cpp cpp-type docutils literal"><span class="pre">Matrix&lt;T&gt;</span></tt> whose entries can
+be locally modified in cases where it would not make sense to change
+the local matrix size (which should instead result from changing the size
+of the full distributed matrix).</p>
+</div>
+<dl class="function">
+<dt id="Matrix:T:::Matrix__b">
+ <tt class="descname">Matrix</tt><big>(</big>bool <em>fixed</em><em>=false </em><big>)</big><a class="headerlink" href="#Matrix:T:::Matrix__b" title="Permalink to this definition">¶</a></dt>
+<dd><p>This simply creates a default <span class="math">\(0 \times 0\)</span> matrix with a leading
+dimension of one (BLAS and LAPACK require positive leading dimensions).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Matrix__Int.Int.b">
+ <tt class="descname">Matrix</tt><big>(</big>Int <em>height</em>, Int <em>width</em>, bool <em>fixed</em><em>=false </em><big>)</big><a class="headerlink" href="#Matrix:T:::Matrix__Int.Int.b" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <cite>height</cite> <span class="math">\(\times\)</span> <cite>width</cite> matrix is created with an unspecified
+leading dimension (though it is currently implemented as
+<span class="math">\(\max(height,1)\)</span>).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Matrix__Int.Int.Int.b">
+ <tt class="descname">Matrix</tt><big>(</big>Int <em>height</em>, Int <em>width</em>, Int <em>ldim</em>, bool <em>fixed</em><em>=false </em><big>)</big><a class="headerlink" href="#Matrix:T:::Matrix__Int.Int.Int.b" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <cite>height</cite> <span class="math">\(\times\)</span> <cite>width</cite> matrix is created with a leading
+dimension equal to <cite>ldim</cite> (which must be greater than or equal
+<span class="math">\(\max(height,1)\)</span>).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Matrix__Int.Int.TCP.Int.b">
+ <tt class="descname">Matrix</tt><big>(</big>Int <em>height</em>, Int <em>width</em>, const T* <em>buffer</em>, Int <em>ldim</em>, bool <em>fixed</em><em>=false </em><big>)</big><a class="headerlink" href="#Matrix:T:::Matrix__Int.Int.TCP.Int.b" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Matrix__Int.Int.TP.Int.b">
+ <tt class="descname">Matrix</tt><big>(</big>Int <em>height</em>, Int <em>width</em>, T* <em>buffer</em>, Int <em>ldim</em>, bool <em>fixed</em><em>=false </em><big>)</big><a class="headerlink" href="#Matrix:T:::Matrix__Int.Int.TP.Int.b" title="Permalink to this definition">¶</a></dt>
+<dd><p>A matrix is built around a column-major (immutable) buffer
+with the specified dimensions. The memory pointed to by <cite>buffer</cite> should
+not be freed until after the <tt class="xref cpp cpp-type docutils literal"><span class="pre">Matrix&lt;T&gt;</span></tt> object is destructed.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Matrix__Matrix:T:CR">
+ <tt class="descname">Matrix</tt><big>(</big>const Matrix&lt;T&gt;&amp; <em>A</em><big>)</big><a class="headerlink" href="#Matrix:T:::Matrix__Matrix:T:CR" title="Permalink to this definition">¶</a></dt>
+<dd><p>A copy (not a view) of the matrix <span class="math">\(A\)</span> is built.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Matrix__Matrix:T:RR">
+ <tt class="descname">Matrix</tt><big>(</big>Matrix&lt;T&gt;&amp;&amp; <em>A</em><big>)</big><tt class="descclassname"> noexcept</tt><a class="headerlink" href="#Matrix:T:::Matrix__Matrix:T:RR" title="Permalink to this definition">¶</a></dt>
+<dd><p>A C++11 move constructor which creates a new matrix by moving the metadata
+from the specified matrix over to the new matrix, which cheaply gives the
+new matrix control over the resources originally assigned to the input
+matrix.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::~Matrix">
+ <tt class="descname">~Matrix</tt><big>(</big><big>)</big><a class="headerlink" href="#Matrix:T:::~Matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frees all resources owned by the matrix upon destruction.</p>
+</dd></dl>
+
+<p class="rubric">Assignment and reconfiguration</p>
+<dl class="function">
+<dt id="Matrix:T:::call-operator__Range:Int:.Range:Int:">
+Matrix&lt;T&gt; <tt class="descname">operator()</tt><big>(</big>Range&lt;Int&gt; <em>I</em>, Range&lt;Int&gt; <em>J</em><big>)</big><a class="headerlink" href="#Matrix:T:::call-operator__Range:Int:.Range:Int:" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::call-operator__Range:Int:.Range:Int:C">
+const Matrix&lt;T&gt; <tt class="descname">operator()</tt><big>(</big>Range&lt;Int&gt; <em>I</em>, Range&lt;Int&gt; <em>J</em><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix:T:::call-operator__Range:Int:.Range:Int:C" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::assign-operator__Matrix:T:CR">
+const Matrix&lt;T&gt;&amp; <tt class="descname">operator=</tt><big>(</big>const Matrix&lt;T&gt;&amp; <em>A</em><big>)</big><a class="headerlink" href="#Matrix:T:::assign-operator__Matrix:T:CR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a full copy of the specified matrix.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::assign-operator__Matrix:T:RR">
+Matrix&lt;T&gt;&amp; <tt class="descname">operator=</tt><big>(</big>Matrix&lt;T&gt;&amp;&amp; <em>A</em><big>)</big><a class="headerlink" href="#Matrix:T:::assign-operator__Matrix:T:RR" title="Permalink to this definition">¶</a></dt>
+<dd><p>A C++11 move assignment which swaps the metadata of two matrices so that
+the resources owned by the two objects will have been cheaply
+switched.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Empty">
+void <tt class="descname">Empty</tt><big>(</big><big>)</big><a class="headerlink" href="#Matrix:T:::Empty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the matrix to <span class="math">\(0 \times 0\)</span> and frees any owned resources.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Resize__Int.Int">
+void <tt class="descname">Resize</tt><big>(</big>Int <em>height</em>, Int <em>width</em><big>)</big><a class="headerlink" href="#Matrix:T:::Resize__Int.Int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reconfigures the matrix to be <cite>height</cite> <span class="math">\(\times\)</span> <cite>width</cite>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Resize__Int.Int.Int">
+void <tt class="descname">Resize</tt><big>(</big>Int <em>height</em>, Int <em>width</em>, Int <em>ldim</em><big>)</big><a class="headerlink" href="#Matrix:T:::Resize__Int.Int.Int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reconfigures the matrix to be <cite>height</cite> <span class="math">\(\times\)</span> <cite>width</cite>, but with
+leading dimension equal to <cite>ldim</cite> (which must be greater than or equal to
+<span class="math">\(\max(height,1)\)</span>).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Attach__Int.Int.TP.Int">
+void <tt class="descname">Attach</tt><big>(</big>Int <em>height</em>, Int <em>width</em>, T* <em>buffer</em>, Int <em>ldim</em><big>)</big><a class="headerlink" href="#Matrix:T:::Attach__Int.Int.TP.Int" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::LockedAttach__Int.Int.TCP.Int">
+void <tt class="descname">LockedAttach</tt><big>(</big>Int <em>height</em>, Int <em>width</em>, const T* <em>buffer</em>, Int <em>ldim</em><big>)</big><a class="headerlink" href="#Matrix:T:::LockedAttach__Int.Int.TCP.Int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reconfigure the matrix around the specified (unmodifiable) buffer.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Control__Int.Int.TP.Int">
+void <tt class="descname">Control</tt><big>(</big>Int <em>height</em>, Int <em>width</em>, T* <em>buffer</em>, Int <em>ldim</em><big>)</big><a class="headerlink" href="#Matrix:T:::Control__Int.Int.TP.Int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reconfigure the matrix around a specified buffer and give ownership of
+the resource to the matrix.</p>
+</dd></dl>
+
+<p class="rubric">Basic queries</p>
+<dl class="function">
+<dt id="Matrix:T:::HeightC">
+Int <tt class="descname">Height</tt><big>(</big><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix:T:::HeightC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::WidthC">
+Int <tt class="descname">Width</tt><big>(</big><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix:T:::WidthC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the height/width of the matrix.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::LDimC">
+Int <tt class="descname">LDim</tt><big>(</big><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix:T:::LDimC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the leading dimension of the underlying buffer.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::MemorySizeC">
+Int <tt class="descname">MemorySize</tt><big>(</big><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix:T:::MemorySizeC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of entries of type <cite>T</cite> that this <tt class="xref cpp cpp-type docutils literal"><span class="pre">Matrix&lt;T&gt;</span></tt>
+instance has allocated space for.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::DiagonalLength__IntC">
+Int <tt class="descname">DiagonalLength</tt><big>(</big>Int <em>offset</em><em>=0 </em><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix:T:::DiagonalLength__IntC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the length of the specified diagonal of the matrix: an offset of
+<span class="math">\(0\)</span> refers to the main diagonal, an offset of <span class="math">\(1\)</span> refers to
+the superdiagonal, an offset of <span class="math">\(-1\)</span> refers to the subdiagonal,
+etc.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Buffer">
+T* <tt class="descname">Buffer</tt><big>(</big><big>)</big><a class="headerlink" href="#Matrix:T:::Buffer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::LockedBufferC">
+const T* <tt class="descname">LockedBuffer</tt><big>(</big><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix:T:::LockedBufferC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a pointer to the (immutable) underlying buffer.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Buffer__Int.Int">
+T* <tt class="descname">Buffer</tt><big>(</big>Int <em>i</em>, Int <em>j</em><big>)</big><a class="headerlink" href="#Matrix:T:::Buffer__Int.Int" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::LockedBuffer__Int.IntC">
+const T* <tt class="descname">LockedBuffer</tt><big>(</big>Int <em>i</em>, Int <em>j</em><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix:T:::LockedBuffer__Int.IntC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a pointer to the (immutable) portion of the buffer that holds entry
+<span class="math">\((i,j)\)</span>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::ViewingC">
+bool <tt class="descname">Viewing</tt><big>(</big><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix:T:::ViewingC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>true</cite> if the underlying buffer is merely a pointer into an
+externally-owned buffer.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::FixedSizeC">
+bool <tt class="descname">FixedSize</tt><big>(</big><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix:T:::FixedSizeC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>true</cite> if the dimensions of the matrix cannot be changed.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::LockedC">
+bool <tt class="descname">Locked</tt><big>(</big><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix:T:::LockedC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>true</cite> if the entries of the matrix cannot be changed.</p>
+</dd></dl>
+
+<p class="rubric">Single-entry manipulation</p>
+<dl class="function">
+<dt id="Matrix:T:::Get__Int.IntC">
+T <tt class="descname">Get</tt><big>(</big>Int <em>i</em>, Int <em>j</em><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix:T:::Get__Int.IntC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::GetRealPart__Int.IntC">
+Base&lt;T&gt; <tt class="descname">GetRealPart</tt><big>(</big>Int <em>i</em>, Int <em>j</em><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix:T:::GetRealPart__Int.IntC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::GetImagPart__Int.IntC">
+Base&lt;T&gt; <tt class="descname">GetImagPart</tt><big>(</big>Int <em>i</em>, Int <em>j</em><big>)</big><tt class="descclassname"> const</tt><a class="headerlink" href="#Matrix:T:::GetImagPart__Int.IntC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return entry <span class="math">\((i,j)\)</span> (or its real or imaginary part).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Set__Int.Int.T">
+void <tt class="descname">Set</tt><big>(</big>Int <em>i</em>, Int <em>j</em>, T <em>alpha</em><big>)</big><a class="headerlink" href="#Matrix:T:::Set__Int.Int.T" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::SetRealPart__Int.Int.Base:T:">
+void <tt class="descname">SetRealPart</tt><big>(</big>Int <em>i</em>, Int <em>j</em>, Base&lt;T&gt; <em>alpha</em><big>)</big><a class="headerlink" href="#Matrix:T:::SetRealPart__Int.Int.Base:T:" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::SetImagPart__Int.Int.Base:T:">
+void <tt class="descname">SetImagPart</tt><big>(</big>Int <em>i</em>, Int <em>j</em>, Base&lt;T&gt; <em>alpha</em><big>)</big><a class="headerlink" href="#Matrix:T:::SetImagPart__Int.Int.Base:T:" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set entry <span class="math">\((i,j)\)</span> (or its real or imaginary part) to <span class="math">\(\alpha\)</span>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Update__Int.Int.T">
+void <tt class="descname">Update</tt><big>(</big>Int <em>i</em>, Int <em>j</em>, T <em>alpha</em><big>)</big><a class="headerlink" href="#Matrix:T:::Update__Int.Int.T" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::UpdateRealPart__Int.Int.Base:T:">
+void <tt class="descname">UpdateRealPart</tt><big>(</big>Int <em>i</em>, Int <em>j</em>, Base&lt;T&gt; <em>alpha</em><big>)</big><a class="headerlink" href="#Matrix:T:::UpdateRealPart__Int.Int.Base:T:" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::UpdateImagPart__Int.Int.Base:T:">
+void <tt class="descname">UpdateImagPart</tt><big>(</big>Int <em>i</em>, Int <em>j</em>, Base&lt;T&gt; <em>alpha</em><big>)</big><a class="headerlink" href="#Matrix:T:::UpdateImagPart__Int.Int.Base:T:" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add <span class="math">\(\alpha\)</span> to entry <span class="math">\((i,j)\)</span> (or its real or imaginary part).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::MakeReal__Int.Int">
+void <tt class="descname">MakeReal</tt><big>(</big>Int <em>i</em>, Int <em>j</em><big>)</big><a class="headerlink" href="#Matrix:T:::MakeReal__Int.Int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Force the <span class="math">\((i,j)\)</span> entry to be real.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix:T:::Conjugate__Int.Int">
+void <tt class="descname">Conjugate</tt><big>(</big>Int <em>i</em>, Int <em>j</em><big>)</big><a class="headerlink" href="#Matrix:T:::Conjugate__Int.Int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Conjugate the <span class="math">\((i,j)\)</span> entry of the matrix.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="special-cases-used-in-elemental">
+<h2>Special cases used in Elemental<a class="headerlink" href="#special-cases-used-in-elemental" title="Permalink to this headline">¶</a></h2>
+<p>This list of special cases is here to help clarify the notation used throughout
+Elemental&#8217;s source (as well as this documentation). These are all special
+cases of <tt class="xref cpp cpp-type docutils literal"><span class="pre">Matrix&lt;T&gt;</span></tt>.</p>
+<dl class="type">
+<dt id="Matrix:Real:__class">
+<em class="property">type </em>class <tt class="descname">Matrix&lt;Real&gt;</tt><a class="headerlink" href="#Matrix:Real:__class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to denote that the underlying datatype <cite>Real</cite> is real.</p>
+</dd></dl>
+
+<dl class="type">
+<dt id="Matrix:Complex:Real::__class">
+<em class="property">type </em>class <tt class="descname">Matrix&lt;Complex&lt;Real&gt;&gt;</tt><a class="headerlink" href="#Matrix:Complex:Real::__class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to denote that the underlying datatype <tt class="xref cpp cpp-type docutils literal"><span class="pre">Complex&lt;Real&gt;</span></tt> is
+complex with base type <cite>Real</cite>.</p>
+</dd></dl>
+
+<dl class="type">
+<dt id="Matrix:F:__class">
+<em class="property">type </em>class <tt class="descname">Matrix&lt;F&gt;</tt><a class="headerlink" href="#Matrix:F:__class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to denote that the underlying datatype <cite>F</cite> is a field.</p>
+</dd></dl>
+
+<dl class="type">
+<dt id="Matrix:Int:__class">
+<em class="property">type </em>class <tt class="descname">Matrix&lt;Int&gt;</tt><a class="headerlink" href="#Matrix:Int:__class" title="Permalink to this definition">¶</a></dt>
+<dd><p>When the underlying datatype is a signed integer.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Zhimin Peng, Yangyang Xu, Ming Yan, Wotao Yin.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+Regularized Regression
+======================
+ARock solves the following regularized empirical risk minimization problem
+
+.. math::
+   \min_x \lambda \, r(x) + \frac{1}{N} \sum_{i=1}^N \ell(a_i^T x, b_i),
+
+where :math:`\{(a_1, b_1), ..., (a_N, b_N)\}` is the set of data-label pairs, and :math:`\lambda>0` is the regularization parameter. We call
+:math:`r(x)` and :math:`\ell(a_i^T x, b_i)` as the regularization function and loss function respectively.
+
+We have implemented ARock for :math:`r(x) = \|x\|_1`, :math:`r(x) = \|x\|_2^2`, :math:`\ell_i(x) = (a_i^T x - b_i)^2`, :math:`\ell_i(x) = log(1+exp(-b_i \cdot a_i^T x))`.
+
+Data preparation
+-----------------
+First, you will need to save you data as a matrix :math:`A` and labels as a vector :math:`b` with the `Matrix Market format <http://math.nist.gov/MatrixMarket/formats.html#MMformat>`_.
+Note that :math:`A` can be sparse or dense, and the size is number of features :math:`\times` number of samples. 
+:math:`b` is a dense vector. You can use the `C <http://math.nist.gov/MatrixMarket/mmio-c.html>`_, `Matlab <http://math.nist.gov/MatrixMarket/mmio/matlab/mmiomatlab.html>`_ or `Python <http://docs.scipy.org/doc/scipy/reference/tutorial/io.html>`_ to save your data as the matrix market format.
+
+Usage
+---------
+In the bin folder, the executable file :cpp:type:`r_least_square` solves the :math:`\ell_1` or :math:`\ell_2` regularized least square problem:
+
+  The usage for r_least_square is::
+
+    ./r_least_square [options] 
+               -data       < matrix market file for A >
+               -label      < matrix market file for b > 
+               -is_sparse  < flag for data type. 1=sparse, 0=dense, default: 1. > 
+               -nthread    < total number of threads, default: 1. > 
+               -epoch      < total number of epochs, default: 10. > 
+               -step_size  < step size, default: 1. > 
+               -flag       < flag for output, default: 0. >
+               -type       < regularization type, can be 'l1' or 'l2', default 'l2'. >
+               -lambda     < regularization parameter, default 1. > 
+
+  
+Example
+-----------
+
+You can run the following command in the test directory to solve the l1 regularized least square problem for the rcv1 dataset::
+
+  ../bin/r_least_square -data rcv1_data.mtx -label rcv1_label.mtx -epoch 10 -nthread 2 -lambda 0.001
+  
+You can expect to get output similar to the following::
+
+  % start ARock to solve l1 regularized least square!
+  ---------------------------------------------
+  The problem has 20242 samples, 47236 features.
+  The data matrix is sparse, lambda is: 0.001.
+  ---------------------------------------------
+       # cores        time(s)      objective
+             1       4.44e+00       2.16e+03
+             2       2.36e+00       2.17e+03
+  ---------------------------------------------
+
+To use the :cpp:type:`r_logistic` solver, you can run the following command through the terminal::
+
+  ../bin/r_logistic -data rcv1_data.mtx -label rcv1_label.mtx -epoch 10 -nthread 2 -lambda 0.001  
+
+You can expect to get output similar to the following::
+
+  % start parallel ayn to solve l1 logistic regression!
+  ---------------------------------------------
+  The problem has 20242 samples, 47236 features.
+  The data matrix is sparse, lambda is: 0.001.
+  ---------------------------------------------
+        # cores        time(s)      objective
+              1       4.61e+00       6.92e-01
+              2       2.68e+00       6.92e-01
+  ---------------------------------------------
+
+
+
+
+Provided solvers
+------------------
+The following is a list of solvers provided by ARock.
+     
+   .. cpp:function:: void l1_logistic(T& A, Vector& b, Vector& x, Vector &Atx, Parameters para)
+		     
+   .. cpp:function:: void l2_logistic(T& A, Vector& b, Vector& x, Vector &Atx, Parameters para)
+		     
+   This is an implementation of our ARock method for solving regularized logistic regression problem. The input are the following::
+
+     
+     /************************************************************************
+     * Finds the optimal solution for l1 or l2 regularized logistic regression.
+     * The algorithm is parallel asynchronous stochastic coordinate descent
+     * method.
+     *
+     * Input:
+     *     A:      data matrix with size num_features x num_samples.
+     *             (Matrix or SpMat)
+     *     b:      label (the label for the corresponding observation)
+     *             (Vector)
+     *     x:      the unknown variables. Weights for different features.
+     *             (Vector)
+     *     lambda: regularization parameter (>=0)
+     *             (double)
+     *     Atx:    temporary variable in shared memory for storing A'*x
+     *             (Vector)
+     *     Ab:     temporary variable in shared memory for storing A*b
+     *             (Vector)
+     *     para: parameters. 
+     *     (struct)
+     *     
+     * Output:
+     *     (none)
+     *
+     **********************************************************************/
+
+
+
+
+   .. cpp:function:: void l1_ls(T& A, Vector& b, Vector& x, Vector &Atx, Vector& Ab, Parameters para)
+		     
+   .. cpp:function:: void l2_ls(T& A, Vector& b, Vector& x, Vector &Atx, Vector& Ab, Parameters para)
+     
+   This is an implementation our ARock method for solving l1 or l2 regularized least square problem. The input are the following::
+   
+     /************************************************************************
+     * Finds the optimal solution for l1 or l2 regularized least square problem. 
+     * The algorithm is parallel asynchronous stochastic coordinate descent
+     * method.
+     *
+     * Input:
+     *     A:      data matrix with size num_features x num_samples.
+     *             (Matrix or SpMat)
+     *     b:      label (the label for the corresponding observation)
+     *             (Vector)
+     *     x:      the unknown variables. Weights for different features.
+     *             (Vector)
+     *     lambda: regularization parameter (>=0)
+     *             (double)
+     *     Atx:    temporary variable in shared memory for storing A'*x
+     *             (Vector)
+     *     Ab:     temporary variable in shared memory for storing A*b
+     *             (Vector)
+     *     para: parameters. 
+     *     (struct)
+     *     
+     * Output:
+     *     (none)
+     *
+     **********************************************************************/      
+
+
+     

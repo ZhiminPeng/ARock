@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Regularized Regression &mdash; ARock 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="ARock 0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Optimization" href="../optimization.html"/>
+        <link rel="next" title="Consensus Optimization" href="consensus.html"/>
+        <link rel="prev" title="Optimization" href="../optimization.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> ARock</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#license-and-copyright">License and copyright</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../build.html">Build package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../build.html#download-arock">Download ARock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build.html#building-arock">Building ARock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build.html#testing-the-installation">Testing the installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../core.html">Matrices and Linear Algebra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../core/ds_vec.html">Dense Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/ds_mtx.html">Dense Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/sp_vec.html">Sparse Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/sp_mtx.html">Sparse Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/algebra.html">Linear Algebra</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../equations.html">Equation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/linear.html">Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/nonlinear.html">Nonlinear equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/ode.html">ODE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/pde.html">PDE</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../optimization.html">Optimization</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">Regularized Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="consensus.html">Consensus Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decentralize.html">Decentralized Optimization</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">ARock</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../optimization.html">Optimization</a> &raquo;</li>
+      
+    <li>Regularized Regression</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/opt/regression.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="regularized-regression">
+<h1>Regularized Regression<a class="headerlink" href="#regularized-regression" title="Permalink to this headline">¶</a></h1>
+<p>ARock solves the following regularized empirical risk minimization problem</p>
+<div class="math">
+\[\min_x \lambda \, r(x) + \frac{1}{N} \sum_{i=1}^N \ell(a_i^T x, b_i),\]</div>
+<p>where <span class="math">\(\{(a_1, b_1), ..., (a_N, b_N)\}\)</span> is the set of data-label pairs, and <span class="math">\(\lambda&gt;0\)</span> is the regularization parameter. We call
+<span class="math">\(r(x)\)</span> and <span class="math">\(\ell(a_i^T x, b_i)\)</span> as the regularization function and loss function respectively.</p>
+<p>We have implemented ARock for <span class="math">\(r(x) = \|x\|_1\)</span>, <span class="math">\(r(x) = \|x\|_2^2\)</span>, <span class="math">\(\ell_i(x) = (a_i^T x - b_i)^2\)</span>, <span class="math">\(\ell_i(x) = log(1+exp(-b_i \cdot a_i^T x))\)</span>.</p>
+<div class="section" id="data-preparation">
+<h2>Data preparation<a class="headerlink" href="#data-preparation" title="Permalink to this headline">¶</a></h2>
+<p>First, you will need to save you data as a matrix <span class="math">\(A\)</span> and labels as a vector <span class="math">\(b\)</span> with the <a class="reference external" href="http://math.nist.gov/MatrixMarket/formats.html#MMformat">Matrix Market format</a>.
+Note that <span class="math">\(A\)</span> can be sparse or dense, and the size is number of features <span class="math">\(\times\)</span> number of samples.
+<span class="math">\(b\)</span> is a dense vector. You can use the <a class="reference external" href="http://math.nist.gov/MatrixMarket/mmio-c.html">C</a>, <a class="reference external" href="http://math.nist.gov/MatrixMarket/mmio/matlab/mmiomatlab.html">Matlab</a> or <a class="reference external" href="http://docs.scipy.org/doc/scipy/reference/tutorial/io.html">Python</a> to save your data as the matrix market format.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>In the bin folder, the executable file <tt class="xref cpp cpp-type docutils literal"><span class="pre">r_least_square</span></tt> solves the <span class="math">\(\ell_1\)</span> or <span class="math">\(\ell_2\)</span> regularized least square problem:</p>
+<blockquote>
+<div><p>The usage for r_least_square is:</p>
+<div class="highlight-python"><div class="highlight"><pre>./r_least_square [options]
+           -data       &lt; matrix market file for A &gt;
+           -label      &lt; matrix market file for b &gt;
+           -is_sparse  &lt; flag for data type. 1=sparse, 0=dense, default: 1. &gt;
+           -nthread    &lt; total number of threads, default: 1. &gt;
+           -epoch      &lt; total number of epochs, default: 10. &gt;
+           -step_size  &lt; step size, default: 1. &gt;
+           -flag       &lt; flag for output, default: 0. &gt;
+           -type       &lt; regularization type, can be &#39;l1&#39; or &#39;l2&#39;, default &#39;l2&#39;. &gt;
+           -lambda     &lt; regularization parameter, default 1. &gt;
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>You can run the following command in the test directory to solve the l1 regularized least square problem for the rcv1 dataset:</p>
+<div class="highlight-python"><div class="highlight"><pre>../bin/r_least_square -data rcv1_data.mtx -label rcv1_label.mtx -epoch 10 -nthread 2 -lambda 0.001
+</pre></div>
+</div>
+<p>You can expect to get output similar to the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>% start ARock to solve l1 regularized least square!
+---------------------------------------------
+The problem has 20242 samples, 47236 features.
+The data matrix is sparse, lambda is: 0.001.
+---------------------------------------------
+     # cores        time(s)      objective
+           1       4.44e+00       2.16e+03
+           2       2.36e+00       2.17e+03
+---------------------------------------------
+</pre></div>
+</div>
+<p>To use the <tt class="xref cpp cpp-type docutils literal"><span class="pre">r_logistic</span></tt> solver, you can run the following command through the terminal:</p>
+<div class="highlight-python"><div class="highlight"><pre>../bin/r_logistic -data rcv1_data.mtx -label rcv1_label.mtx -epoch 10 -nthread 2 -lambda 0.001
+</pre></div>
+</div>
+<p>You can expect to get output similar to the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>% start parallel ayn to solve l1 logistic regression!
+---------------------------------------------
+The problem has 20242 samples, 47236 features.
+The data matrix is sparse, lambda is: 0.001.
+---------------------------------------------
+      # cores        time(s)      objective
+            1       4.61e+00       6.92e-01
+            2       2.68e+00       6.92e-01
+---------------------------------------------
+</pre></div>
+</div>
+</div>
+<div class="section" id="provided-solvers">
+<h2>Provided solvers<a class="headerlink" href="#provided-solvers" title="Permalink to this headline">¶</a></h2>
+<p>The following is a list of solvers provided by ARock.</p>
+<blockquote>
+<div><dl class="function">
+<dt id="l1_logistic__TR.VectorR.VectorR.VectorR.Parameters">
+void <tt class="descname">l1_logistic</tt><big>(</big>T&amp; <em>A</em>, Vector&amp; <em>b</em>, Vector&amp; <em>x</em>, Vector&amp; <em>Atx</em>, Parameters <em>para</em><big>)</big><a class="headerlink" href="#l1_logistic__TR.VectorR.VectorR.VectorR.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="l2_logistic__TR.VectorR.VectorR.VectorR.Parameters">
+void <tt class="descname">l2_logistic</tt><big>(</big>T&amp; <em>A</em>, Vector&amp; <em>b</em>, Vector&amp; <em>x</em>, Vector&amp; <em>Atx</em>, Parameters <em>para</em><big>)</big><a class="headerlink" href="#l2_logistic__TR.VectorR.VectorR.VectorR.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This is an implementation of our ARock method for solving regularized logistic regression problem. The input are the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>/************************************************************************
+* Finds the optimal solution for l1 or l2 regularized logistic regression.
+* The algorithm is parallel asynchronous stochastic coordinate descent
+* method.
+*
+* Input:
+*     A:      data matrix with size num_features x num_samples.
+*             (Matrix or SpMat)
+*     b:      label (the label for the corresponding observation)
+*             (Vector)
+*     x:      the unknown variables. Weights for different features.
+*             (Vector)
+*     lambda: regularization parameter (&gt;=0)
+*             (double)
+*     Atx:    temporary variable in shared memory for storing A&#39;*x
+*             (Vector)
+*     Ab:     temporary variable in shared memory for storing A*b
+*             (Vector)
+*     para: parameters.
+*     (struct)
+*
+* Output:
+*     (none)
+*
+**********************************************************************/
+</pre></div>
+</div>
+<dl class="function">
+<dt id="l1_ls__TR.VectorR.VectorR.VectorR.VectorR.Parameters">
+void <tt class="descname">l1_ls</tt><big>(</big>T&amp; <em>A</em>, Vector&amp; <em>b</em>, Vector&amp; <em>x</em>, Vector&amp; <em>Atx</em>, Vector&amp; <em>Ab</em>, Parameters <em>para</em><big>)</big><a class="headerlink" href="#l1_ls__TR.VectorR.VectorR.VectorR.VectorR.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="l2_ls__TR.VectorR.VectorR.VectorR.VectorR.Parameters">
+void <tt class="descname">l2_ls</tt><big>(</big>T&amp; <em>A</em>, Vector&amp; <em>b</em>, Vector&amp; <em>x</em>, Vector&amp; <em>Atx</em>, Vector&amp; <em>Ab</em>, Parameters <em>para</em><big>)</big><a class="headerlink" href="#l2_ls__TR.VectorR.VectorR.VectorR.VectorR.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This is an implementation our ARock method for solving l1 or l2 regularized least square problem. The input are the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>/************************************************************************
+* Finds the optimal solution for l1 or l2 regularized least square problem.
+* The algorithm is parallel asynchronous stochastic coordinate descent
+* method.
+*
+* Input:
+*     A:      data matrix with size num_features x num_samples.
+*             (Matrix or SpMat)
+*     b:      label (the label for the corresponding observation)
+*             (Vector)
+*     x:      the unknown variables. Weights for different features.
+*             (Vector)
+*     lambda: regularization parameter (&gt;=0)
+*             (double)
+*     Atx:    temporary variable in shared memory for storing A&#39;*x
+*             (Vector)
+*     Ab:     temporary variable in shared memory for storing A*b
+*             (Vector)
+*     para: parameters.
+*     (struct)
+*
+* Output:
+*     (none)
+*
+**********************************************************************/
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="consensus.html" class="btn btn-neutral float-right" title="Consensus Optimization">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../optimization.html" class="btn btn-neutral" title="Optimization"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Zhimin Peng, Yangyang Xu, Ming Yan, Wotao Yin.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

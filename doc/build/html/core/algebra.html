@@ -1,0 +1,383 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Linear Algebra &mdash; ARock 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="ARock 0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Matrices and Linear Algebra" href="../core.html"/>
+        <link rel="next" title="Equation" href="../equations.html"/>
+        <link rel="prev" title="Sparse Matrix" href="sp_mtx.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> ARock</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#license-and-copyright">License and copyright</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../build.html">Build package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../build.html#download-arock">Download ARock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build.html#building-arock">Building ARock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build.html#testing-the-installation">Testing the installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../core.html">Matrices and Linear Algebra</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ds_vec.html">Dense Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ds_mtx.html">Dense Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sp_vec.html">Sparse Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sp_mtx.html">Sparse Matrix</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Linear Algebra</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../equations.html">Equation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/linear.html">Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/nonlinear.html">Nonlinear equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/ode.html">ODE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../eqn/pde.html">PDE</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../optimization.html">Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../opt/regression.html">Regularized Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../opt/consensus.html">Consensus Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../opt/decentralize.html">Decentralized Optimization</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">ARock</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../core.html">Matrices and Linear Algebra</a> &raquo;</li>
+      
+    <li>Linear Algebra</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/core/algebra.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="linear-algebra">
+<h1>Linear Algebra<a class="headerlink" href="#linear-algebra" title="Permalink to this headline">¶</a></h1>
+<p>The <tt class="xref cpp cpp-type docutils literal"><span class="pre">algebra.h</span></tt> file provides a few functions for linear
+algebra operations, such as calculating the norm of a vector, computing inner
+product of vectors, performing matrix vector operations, etc.</p>
+<dl class="class">
+<dt>
+<tt class="descname">algebra.h</tt></dt>
+<dd><p class="rubric">Vector functions</p>
+<dl class="function">
+<dt id="norm__VectorR.i">
+double <tt class="descname">norm</tt><big>(</big>Vector&amp; <em>x</em>, int <em>type</em><big>)</big><a class="headerlink" href="#norm__VectorR.i" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the norm of a vector of different type:</p>
+<blockquote>
+<div><ul class="simple">
+<li>type = 0: <span class="math">\(\ell_0\)</span> norm, the number of nonzeros;</li>
+<li>type = 1: <span class="math">\(\ell_1\)</span> norm. Sum of the absolute values;</li>
+<li>type = 2: <span class="math">\(\ell_2\)</span> norm. Euclidean norm;</li>
+<li>type = 3: <span class="math">\(\ell_\infty\)</span> norm. Maximum of the absolute value.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="norm__VectorR">
+double <tt class="descname">norm</tt><big>(</big>Vector&amp; <em>x</em><big>)</big><a class="headerlink" href="#norm__VectorR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the <span class="math">\(\ell_2\)</span> norm of vector x.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sub__VectorR.VectorR">
+void <tt class="descname">sub</tt><big>(</big>Vector&amp; <em>a</em>, Vector&amp; <em>b</em><big>)</big><a class="headerlink" href="#sub__VectorR.VectorR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtract b from a, i.e., a = a - b.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="add__VectorR.VectorR">
+void <tt class="descname">add</tt><big>(</big>Vector&amp; <em>a</em>, Vector&amp; <em>b</em><big>)</big><a class="headerlink" href="#add__VectorR.VectorR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add dense vector b to vector a, i.e., a = a + b.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="add__VectorR.SpVecR">
+void <tt class="descname">add</tt><big>(</big>Vector&amp; <em>a</em>, SpVec&amp; <em>b</em><big>)</big><a class="headerlink" href="#add__VectorR.SpVecR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add sparse vector b to vector a, i.e., a = a + b.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="dot__VectorR.VectorR">
+double <tt class="descname">dot</tt><big>(</big>Vector&amp; <em>a</em>, Vector&amp; <em>b</em><big>)</big><a class="headerlink" href="#dot__VectorR.VectorR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the inner product of vector a and vector b.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="copy__VectorR.VectorR.i.i">
+void <tt class="descname">copy</tt><big>(</big>Vector&amp; <em>x</em>, Vector&amp; <em>y</em>, int <em>start</em>, int <em>end</em><big>)</big><a class="headerlink" href="#copy__VectorR.VectorR.i.i" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy part of a vector to another vector, i.e., y = x(start:end)</p>
+</dd></dl>
+
+<p class="rubric">Matrix functions</p>
+<dl class="function">
+<dt id="calculate_column_norm__MatrixR.VectorR">
+void <tt class="descname">calculate_column_norm</tt><big>(</big>Matrix&amp; <em>A</em>, Vector&amp; <em>nrm</em><big>)</big><a class="headerlink" href="#calculate_column_norm__MatrixR.VectorR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the <span class="math">\(\ell_2\)</span> norm for each column of dense matrix A.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="calculate_column_norm__SpMatR.VectorR">
+void <tt class="descname">calculate_column_norm</tt><big>(</big>SpMat&amp; <em>A</em>, Vector&amp; <em>nrm</em><big>)</big><a class="headerlink" href="#calculate_column_norm__SpMatR.VectorR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the <span class="math">\(\ell_2\)</span> norm for each column of sparse matrix A.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="multiply__SpMatR.SpMatR">
+void <tt class="descname">multiply</tt><big>(</big>SpMat&amp; <em>A</em>, SpMat&amp; <em>AAt</em><big>)</big><a class="headerlink" href="#multiply__SpMatR.SpMatR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply A with A&#8217;, i.e., AAt = A * A&#8217;</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="multiply__MatrixR.MatrixR">
+void <tt class="descname">multiply</tt><big>(</big>Matrix&amp; <em>A</em>, Matrix&amp; <em>AAt</em><big>)</big><a class="headerlink" href="#multiply__MatrixR.MatrixR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply A with A&#8217;, i.e., AAt = A * A&#8217;</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="copy__MatrixR.MatrixR.i.i">
+void <tt class="descname">copy</tt><big>(</big>Matrix&amp; <em>A</em>, Matrix&amp; <em>B</em>, int <em>start</em>, int <em>end</em><big>)</big><a class="headerlink" href="#copy__MatrixR.MatrixR.i.i" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy part of a dense matrix to another dense matrix, i.e., B = A(start:end, :)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="copy__SpMatR.SpMatR.i.i">
+void <tt class="descname">copy</tt><big>(</big>SpMat&amp; <em>A</em>, SpMat&amp; <em>B</em>, int <em>start</em>, int <em>end</em><big>)</big><a class="headerlink" href="#copy__SpMatR.SpMatR.i.i" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy part of a sparse matrix to another sparse matrix, i.e., B = A(start:end, :)</p>
+</dd></dl>
+
+<p class="rubric">Matrix vector functions</p>
+<dl class="function">
+<dt id="trans_multiply__MatrixR.VectorR.VectorR">
+void <tt class="descname">trans_multiply</tt><big>(</big>Matrix&amp; <em>A</em>, Vector&amp; <em>x</em>, Vector&amp; <em>Atx</em><big>)</big><a class="headerlink" href="#trans_multiply__MatrixR.VectorR.VectorR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate <span class="math">\(Atx = A^T \, x\)</span>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sub__VectorR.MatrixR.i.double">
+void <tt class="descname">sub</tt><big>(</big>Vector&amp; <em>a</em>, Matrix&amp; <em>A</em>, int <em>row</em>, double <em>scalar</em><big>)</big><a class="headerlink" href="#sub__VectorR.MatrixR.i.double" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtract a scalar times a row of matrix from a given vector,
+i.e., a = a - scalar * A(row, :)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sub__VectorR.SpMatR.i.double">
+void <tt class="descname">sub</tt><big>(</big>Vector&amp; <em>a</em>, SpMat&amp; <em>A</em>, int <em>row</em>, double <em>scalar</em><big>)</big><a class="headerlink" href="#sub__VectorR.SpMatR.i.double" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtract a scalar times a row of matrix from a given vector,
+i.e., a = a - scalar * A(row, :)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sub__SpVecR.SpMatR.i.double">
+void <tt class="descname">sub</tt><big>(</big>SpVec&amp; <em>a</em>, SpMat&amp; <em>A</em>, int <em>row</em>, double <em>scalar</em><big>)</big><a class="headerlink" href="#sub__SpVecR.SpMatR.i.double" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtract a scalar times a row of matrix from a given vector,
+i.e., a = a - scalar * A(row, :)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sub__SpVecR.MatrixR.i.double">
+void <tt class="descname">sub</tt><big>(</big>SpVec&amp; <em>a</em>, Matrix&amp; <em>A</em>, int <em>row</em>, double <em>scalar</em><big>)</big><a class="headerlink" href="#sub__SpVecR.MatrixR.i.double" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtract a scalar times a row of matrix from a given vector,
+i.e., a = a - scalar * A(row, :)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="dot__SpMatR.VectorR.i">
+double <tt class="descname">dot</tt><big>(</big>SpMat&amp; <em>A</em>, Vector&amp; <em>x</em>, int <em>row</em><big>)</big><a class="headerlink" href="#dot__SpMatR.VectorR.i" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="dot__MatrixR.VectorR.i">
+double <tt class="descname">dot</tt><big>(</big>Matrix&amp; <em>A</em>, Vector&amp; <em>x</em>, int <em>row</em><big>)</big><a class="headerlink" href="#dot__MatrixR.VectorR.i" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calcuate inner product of A(row, :) * x.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="multiply__SpMatR.VectorR.VectorR">
+void <tt class="descname">multiply</tt><big>(</big>SpMat&amp; <em>A</em>, Vector&amp; <em>x</em>, Vector&amp; <em>Ax</em><big>)</big><a class="headerlink" href="#multiply__SpMatR.VectorR.VectorR" title="Permalink to this definition">¶</a></dt>
+<dd><p>multiply sparse matrix A with x, i.e., <span class="math">\(Ax = A \cdot x\)</span></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="multiply__MatrixR.VectorR.VectorR">
+void <tt class="descname">multiply</tt><big>(</big>Matrix&amp; <em>A</em>, Vector&amp; <em>x</em>, Vector&amp; <em>Ax</em><big>)</big><a class="headerlink" href="#multiply__MatrixR.VectorR.VectorR" title="Permalink to this definition">¶</a></dt>
+<dd><p>multiply dense matrix A with x, i.e., <span class="math">\(Ax = A \cdot x\)</span></p>
+</dd></dl>
+
+<p class="rubric">Print functions</p>
+<dl class="function">
+<dt id="print__VectorR">
+void <tt class="descname">print</tt><big>(</big>Vector&amp; <em>x</em><big>)</big><a class="headerlink" href="#print__VectorR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the vector.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="print__MatrixR">
+void <tt class="descname">print</tt><big>(</big>Matrix&amp; <em>x</em><big>)</big><a class="headerlink" href="#print__MatrixR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the dense matrix.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="print__SpMatR">
+void <tt class="descname">print</tt><big>(</big>SpMat&amp; <em>x</em><big>)</big><a class="headerlink" href="#print__SpMatR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the sparse matrix.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../equations.html" class="btn btn-neutral float-right" title="Equation">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sp_mtx.html" class="btn btn-neutral" title="Sparse Matrix"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Zhimin Peng, Yangyang Xu, Ming Yan, Wotao Yin.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

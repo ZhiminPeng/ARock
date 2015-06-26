@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Build package &mdash; ARock 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="ARock 0.1 documentation" href="index.html"/>
+        <link rel="next" title="Matrices and Linear Algebra" href="core.html"/>
+        <link rel="prev" title="Introduction" href="intro.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> ARock</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#license-and-copyright">License and copyright</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Build package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#download-arock">Download ARock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-arock">Building ARock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-the-installation">Testing the installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Matrices and Linear Algebra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core/ds_vec.html">Dense Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/ds_mtx.html">Dense Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/sp_vec.html">Sparse Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/sp_mtx.html">Sparse Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/algebra.html">Linear Algebra</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="equations.html">Equation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="eqn/linear.html">Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eqn/nonlinear.html">Nonlinear equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eqn/ode.html">ODE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eqn/pde.html">PDE</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="optimization.html">Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="opt/regression.html">Regularized Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opt/consensus.html">Consensus Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opt/decentralize.html">Decentralized Optimization</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">ARock</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Build package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/build.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="build-package">
+<h1>Build package<a class="headerlink" href="#build-package" title="Permalink to this headline">¶</a></h1>
+<p>ARock&#8217;s build system relies on <a class="reference external" href="https://www.gnu.org/software/make/">GNU make</a>. It can be easily build on Linux and Unix environments, and, at least in theory, various versions of Microsoft Windows. A relative up-to-date C++ compiler (e.g., gcc &gt;= 4.1) is required in all cases.</p>
+<div class="section" id="download-arock">
+<h2>Download ARock<a class="headerlink" href="#download-arock" title="Permalink to this headline">¶</a></h2>
+<p>The ARock package can be downloaded from the following link:</p>
+<div class="highlight-python"><div class="highlight"><pre>https://github.com/ZhiminPeng/ARock
+</pre></div>
+</div>
+</div>
+<div class="section" id="building-arock">
+<h2>Building ARock<a class="headerlink" href="#building-arock" title="Permalink to this headline">¶</a></h2>
+<p>On Linux or Unix machines with g++ and GNU make installed in standard locations, building ARock can be as simple as:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd ARock
+make
+</pre></div>
+</div>
+<p>The executable files are in the bin folder. The following is the list of executable files:</p>
+<div class="highlight-python"><div class="highlight"><pre>r_least_square [solver for regularized least square problems]
+r_logistic     [solver for regularized logistic regression]
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing-the-installation">
+<h2>Testing the installation<a class="headerlink" href="#testing-the-installation" title="Permalink to this headline">¶</a></h2>
+<p>Once ARock has been successfully compiled, it is a good idea to verify that the executable files are functioning properly. You can go to the test folder by the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd test
+</pre></div>
+</div>
+<p>To test ARock for l1 regularized least square problem, run the following commands:</p>
+<div class="highlight-python"><div class="highlight"><pre>../bin/r_least_square -data rcv1_data.mtx -label rcv1_label.mtx -epoch 10 -is_sparse 1 -nthread 2 -type l1
+</pre></div>
+</div>
+<p>To test ARock for solving l1 regularized logistic regression problem, run the following commands:</p>
+<div class="highlight-python"><div class="highlight"><pre>../bin/r_logistic -data rcv1_data.mtx -label rcv1_label.mtx -epoch 10 -is_sparse 1 -nthread 2 -type l1
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="core.html" class="btn btn-neutral float-right" title="Matrices and Linear Algebra">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="intro.html" class="btn btn-neutral" title="Introduction"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Zhimin Peng, Yangyang Xu, Ming Yan, Wotao Yin.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
