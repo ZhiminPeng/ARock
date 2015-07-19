@@ -17,6 +17,7 @@
 #include "matrices.h"
 using namespace std;
 
+
 // Shrinkage function.
 double shrink(double x, double t)
 {
