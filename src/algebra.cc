@@ -18,47 +18,49 @@
 using namespace std;
 
 
-// Shrinkage function.
-double shrink(double x, double t)
-{
-  if(x>t) return x-t;
-  else if(x<-t) return x+t;
-  else return 0.;
+// Shrinkage function
+double shrink(double x, double t) {
+  if(x>t) {
+    return x-t;
+  } else if(x<-t) {
+    return x+t;
+  } else {
+    return 0.;
+  }
 }
 
-double norm(Vector& x, int type)
-{
+double norm(Vector& x, int type) {
   double tmp = 0.0;
-  if(type==0)
-  {
-    for (unsigned i = 0; i < x.size(); ++i)
+  if(type==0) {
+    for (unsigned i = 0; i < x.size(); ++i) {
       if(x[i]!=0) tmp = tmp + 1;
-  }else if(type == 2)
-  {
+    }
+  } else if(type == 2) {
     for (unsigned i = 0; i < x.size(); ++i)
       tmp += x[i] * x[i];
     tmp = sqrt(tmp);
-  }else if(type == 1)
-  {
-    for (unsigned i = 0; i < x.size(); ++i)
+  } else if(type == 1) {
+    for (unsigned i = 0; i < x.size(); ++i) {
       tmp += fabs(x[i]);
-  }else if(type == 3)
+    }
+  } else if (type == 3)
   {
     for (unsigned i = 0; i < x.size(); ++i)
       tmp = max(fabs(x[i]), tmp);
   }
+  // TODO(zhiminp): else statement
   return tmp;
 }
 
 
-// Calculates the two norm of a vector.
+// Calculates the two norm of a vector
 double norm(Vector& x)
 {
   return norm(x, 2);
 }
 
 
-// Calculate the column norm of a matrix.
+// Calculates the column norm of a matrix
 void calculate_column_norm(Matrix& A, Vector& nrm)
 {
   int num_cols = A.cols();
@@ -83,10 +85,8 @@ void calculate_column_norm(Matrix& A, Vector& nrm)
 }
 
 
-// Calculate the column norm of a matrix.
-void calculate_column_norm(SpMat& A, Vector& nrm)
-{
-
+// Calculates the column norm of a matrix
+void calculate_column_norm(SpMat& A, Vector& nrm) {
   for (int k=0; k<A.outerSize(); ++k)
   {
     for (SpMat::InnerIterator it(A,k); it; ++it)
@@ -105,7 +105,7 @@ void calculate_column_norm(SpMat& A, Vector& nrm)
 }
 
 
-// a = a - b
+// Implements a = a - b
 void sub(Vector& a, Vector& b)
 {
   for (unsigned i = 0; i < a.size(); ++i)
@@ -113,7 +113,7 @@ void sub(Vector& a, Vector& b)
 }
 
 
-// a = a - scalar * A(row, :)
+// Implements a = a - scalar * A(row, :)
 void sub(Vector& a, Matrix& A, int row, double scalar)
 {
   for (unsigned i = 0; i < a.size(); ++i)
@@ -121,7 +121,7 @@ void sub(Vector& a, Matrix& A, int row, double scalar)
 }
 
 
-// a = a - scalar * A(row, :)
+// Implements a = a - scalar * A(row, :)
 void sub(Vector& a, SpMat& A, int row, double scalar)
 {
   double result = 0.;
@@ -130,7 +130,7 @@ void sub(Vector& a, SpMat& A, int row, double scalar)
 }
 
 
-// a = a - scalar * A(row, :)
+// Implements a = a - scalar * A(row, :)
 void sub(SpVec& a, SpMat& A, int row, double scalar)
 {
   
@@ -140,7 +140,7 @@ void sub(SpVec& a, SpMat& A, int row, double scalar)
 }
 
 
-// a = a - scalar * A(row, :)
+// Implements a = a - scalar * A(row, :)
 void sub(SpVec& a, Matrix& A, int row, double scalar)
 {
   
@@ -150,7 +150,7 @@ void sub(SpVec& a, Matrix& A, int row, double scalar)
 }
 
 
-// a = a + b
+// Implements a = a + b
 void add(Vector &a, Vector& b)
 {
   for (unsigned i = 0; i < a.size(); ++i)
@@ -167,7 +167,7 @@ void add(Vector &a, SpVec& b)
 }
 
 
-// calculate the inner product of two vectors
+// Calculates the inner product of two vectors
 double dot(Vector &a, Vector &b)
 {
   double result = 0.;
@@ -179,7 +179,7 @@ double dot(Vector &a, Vector &b)
 }
 
 
-// calcuate inner product of A(row, :) * x
+// Calcuates inner product of A(row, :) * x
 double dot(SpMat& A, Vector& x, int row)
 {
   double result = 0.;
@@ -189,7 +189,7 @@ double dot(SpMat& A, Vector& x, int row)
 }
 
 
-// calcuate inner product of A(row, :) * x
+// Calcuates inner product of A(row, :) * x
 double dot(Matrix& A, Vector& x, int row)
 {
   double result = 0.;
@@ -199,8 +199,8 @@ double dot(Matrix& A, Vector& x, int row)
 }
 
 
-// print a vector
-void print(Vector x)
+// Prints a vector
+void print(Vector& x)
 {
   for (unsigned i = 0; i < x.size(); ++i)
     cout<<x[i]<<" ";
@@ -208,7 +208,7 @@ void print(Vector x)
 }
 
 
-// print a dense matrix
+// Prints a dense matrix
 void print(Matrix &A)
 {
   for (int i = 0; i < A.rows(); ++i)
@@ -221,15 +221,15 @@ void print(Matrix &A)
 }
 
 
-// print a sparse matrix 
+// Prints a sparse matrix 
 void print(SpMat &A)
 {
-  cout<<A;
+  cout << A;
   return;
 }
 
 
-// calculate A' * x
+// Calculates A' * x
 void trans_multiply(Matrix& A, Vector&x, Vector& Atx)
 {
   int m = A.rows(), n = A.cols();
@@ -243,7 +243,7 @@ void trans_multiply(Matrix& A, Vector&x, Vector& Atx)
 }
 
 
-// mutiply A with x, i.e., Ax = A * x
+// Calculates Ax = A * x
 void multiply(SpMat &A, Vector &x, Vector& Ax)
 {
   int dim = A.rows();
@@ -254,7 +254,7 @@ void multiply(SpMat &A, Vector &x, Vector& Ax)
 }
 
 
-// mutiply A with x, i.e., Ax = A * x
+// Calculates Ax = A * x
 void multiply(Matrix &A, Vector &x, Vector& Ax)
 {
   int m = A.rows();
@@ -266,7 +266,7 @@ void multiply(Matrix &A, Vector &x, Vector& Ax)
 }
 
 
-// caculate AAt = A * A' for sparse matrix
+// Caculates AAt = A * A' for sparse matrix
 void multiply(SpMat &A, SpMat &AAt)
 {
   AAt = (A * A.transpose()).pruned();
@@ -274,7 +274,7 @@ void multiply(SpMat &A, SpMat &AAt)
 }
 
     
-// calculate A * A' for dense matrix
+// Calculates A * A' for dense matrix
 void multiply(Matrix &A, Matrix &AAt)
 {
   int i, j, k;
@@ -283,16 +283,19 @@ void multiply(Matrix &A, Matrix &AAt)
 #pragma omp parallel private(i, j, k)
   {
 #pragma omp for schedule (static)
-    for (i = 0; i < m; ++i)
-      for (j = 0; j < m; ++j)
-        for(k = 0; k < n; ++k)
+    for (i = 0; i < m; ++i) {
+      for (j = 0; j < m; ++j) {
+        for(k = 0; k < n; ++k) {
           AAt(i, j) += A(i, k) * A(j, k);
+        }
+      }
+    }
   }
   return;
 }
 
 
-// B = A(start:end, :)
+// Selects B = A(start:end, :)
 void copy(SpMat& A, SpMat& B, int start, int end)
 {
   int n = A.cols();
@@ -303,7 +306,7 @@ void copy(SpMat& A, SpMat& B, int start, int end)
 }
 
 
-// B = A(start:end, :)
+// Selects B = A(start:end, :)
 void copy(Matrix& A, Matrix& B, int start, int end)
 {
   int n = A.cols();
@@ -317,7 +320,7 @@ void copy(Matrix& A, Matrix& B, int start, int end)
 }
 
 
-// y = x(start:end)
+// Selects y = x(start:end)
 void copy(Vector& x, Vector& y, int start, int end)
 {
   for(int i=start;i<end;i++)
