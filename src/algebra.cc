@@ -19,34 +19,36 @@ using namespace std;
 
 
 // Shrinkage function
-double shrink(double x, double t)
-{
-  if(x>t) return x-t;
-  else if(x<-t) return x+t;
-  else return 0.;
+double shrink(double x, double t) {
+  if(x>t) {
+    return x-t;
+  } else if(x<-t) {
+    return x+t;
+  } else {
+    return 0.;
+  }
 }
 
-double norm(Vector& x, int type)
-{
+double norm(Vector& x, int type) {
   double tmp = 0.0;
-  if(type==0)
-  {
-    for (unsigned i = 0; i < x.size(); ++i)
+  if(type==0) {
+    for (unsigned i = 0; i < x.size(); ++i) {
       if(x[i]!=0) tmp = tmp + 1;
-  }else if(type == 2)
-  {
+    }
+  } else if(type == 2) {
     for (unsigned i = 0; i < x.size(); ++i)
       tmp += x[i] * x[i];
     tmp = sqrt(tmp);
-  }else if(type == 1)
-  {
-    for (unsigned i = 0; i < x.size(); ++i)
+  } else if(type == 1) {
+    for (unsigned i = 0; i < x.size(); ++i) {
       tmp += fabs(x[i]);
-  }else if(type == 3)
+    }
+  } else if (type == 3)
   {
     for (unsigned i = 0; i < x.size(); ++i)
       tmp = max(fabs(x[i]), tmp);
   }
+  // TODO(zhiminp): else statement
   return tmp;
 }
 
@@ -84,9 +86,7 @@ void calculate_column_norm(Matrix& A, Vector& nrm)
 
 
 // Calculates the column norm of a matrix
-void calculate_column_norm(SpMat& A, Vector& nrm)
-{
-
+void calculate_column_norm(SpMat& A, Vector& nrm) {
   for (int k=0; k<A.outerSize(); ++k)
   {
     for (SpMat::InnerIterator it(A,k); it; ++it)
@@ -224,7 +224,7 @@ void print(Matrix &A)
 // Prints a sparse matrix 
 void print(SpMat &A)
 {
-  cout<<A;
+  cout << A;
   return;
 }
 
@@ -283,10 +283,13 @@ void multiply(Matrix &A, Matrix &AAt)
 #pragma omp parallel private(i, j, k)
   {
 #pragma omp for schedule (static)
-    for (i = 0; i < m; ++i)
-      for (j = 0; j < m; ++j)
-        for(k = 0; k < n; ++k)
+    for (i = 0; i < m; ++i) {
+      for (j = 0; j < m; ++j) {
+        for(k = 0; k < n; ++k) {
           AAt(i, j) += A(i, k) * A(j, k);
+        }
+      }
+    }
   }
   return;
 }
