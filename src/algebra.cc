@@ -6,15 +6,16 @@
  * Date Created:  01/29/2015
  * Date Modified: 01/29/2015
  *                02/19/2015
- *                04/27/2015 (remove some redundant functions, clean the code)
- * Author:        Zhimin Peng, Yangyang Xu, Ming Yan, Wotao Yin
+ *                04/27/2015 (removed some redundant functions, clean the code)
+ *                07/19/2015 (modified the style of the code)
+ * Authors:       Zhimin Peng, Yangyang Xu, Ming Yan, Wotao Yin
  * Contact:       zhimin.peng@math.ucla.edu
  ******************************************************************************/
 
 #include <vector>
 #include <string>
 #include <iomanip>
-#include <stdexcept>      // std::invalid_argument
+#include <stdexcept>   // std::invalid_argument
 #include "matrices.h"
 
 
