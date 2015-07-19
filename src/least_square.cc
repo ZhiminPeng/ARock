@@ -167,7 +167,6 @@ void l2_ls(T&          A,
   // main loop; each iteration represent an epoch
   for(int itr = 0; itr < MAX_ITER; itr++) {
     for(block = 0; block < local_num_blocks; block++) {
-      
       /*
         Generate a random block id.
         We first partition the variables into a fixed set of coordinates
@@ -196,8 +195,8 @@ void l2_ls(T&          A,
       }
 
       // step 3. update x
-      for (i=local_start; i < local_end; ++i) {
-        x[i] -=local_dx[i-local_start];
+      for (i = local_start; i < local_end; ++i) {
+        x[i] -= local_dx[i-local_start];
       }
       add(Atx, local_dAtx);
     }
@@ -230,7 +229,7 @@ template void l2_ls<Matrix >(
 
 /*****************************************************************************
  *
- * Calculates the optimal solution for l1 regularized least square (lasso)
+ * Solves the l1 regularized least square (Lasso)
  *  The algorithm is forward backward splitting.
  *
  * Input:
@@ -260,8 +259,7 @@ void l1_ls(T&          A,
 	   Vector&     x, 
 	   Vector&     Atx,
 	   Vector&     Ab, 
-	   Parameters& para)
-{
+	   Parameters& para) {
   int num_features     = A.rows();                   // number of features 
   int num_samples      = A.cols();                   // number of samples
   int num_threads      = omp_get_num_threads();      // number of threads 
