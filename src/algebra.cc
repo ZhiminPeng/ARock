@@ -21,10 +21,10 @@
 
 // Shrinkage function
 double shrink(double x, double t) {
-  if(x>t) {
-    return x-t;
-  } else if(x<-t) {
-    return x+t;
+  if(x > t) {
+    return x - t;
+  } else if(x <- t) {
+    return x + t;
   } else {
     return 0.;
   }
