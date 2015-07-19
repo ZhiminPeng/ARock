@@ -1,5 +1,5 @@
 /******************************************************************************
- * implementation file for linear algebra operations, include functions such as
+ * implementations for linear algebra operations, including functions such as
  * norm, dot, sub, add, multiply. Please refer to include/algebra.h for more
  * details of the functions.
  *
@@ -16,14 +16,15 @@
 #include <iomanip>
 #include "matrices.h"
 using namespace std;
-// shrinkage function
+
+
+// Shrinkage function.
 double shrink(double x, double t)
 {
   if(x>t) return x-t;
   else if(x<-t) return x+t;
   else return 0.;
 }
-
 
 double norm(Vector& x, int type)
 {
@@ -57,7 +58,7 @@ double norm(Vector& x)
 }
 
 
-// calculate the column norm of a matrix
+// Calculate the column norm of a matrix.
 void calculate_column_norm(Matrix& A, Vector& nrm)
 {
   int num_cols = A.cols();
@@ -82,7 +83,7 @@ void calculate_column_norm(Matrix& A, Vector& nrm)
 }
 
 
-// calculate the column norm of a matrix
+// Calculate the column norm of a matrix.
 void calculate_column_norm(SpMat& A, Vector& nrm)
 {
 
