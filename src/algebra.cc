@@ -197,8 +197,8 @@ double dot(Matrix& A, Vector& x, int row)
 void print(Vector& x)
 {
   for (unsigned i = 0; i < x.size(); ++i)
-    cout<<x[i]<<" ";
-  cout<<endl;
+    std::cout<<x[i]<<" ";
+  std::cout<<endl;
 }
 
 
@@ -207,23 +207,23 @@ void print(Matrix &A)
 {
   for (int i = 0; i < A.rows(); ++i) {
     for (int j = 0; j < A.cols(); ++j) {
-      cout << setw(10) << A(i, j);
+      std::cout << setw(10) << A(i, j);
     }
-    cout << endl;
+    std::cout << endl;
   }
-  cout << endl;
+  std::cout << endl;
 }
 
 
 // Prints a sparse matrix 
 void print(SpMat &A) {
-  cout << A;
+  std::cout << A;
   return;
 }
 
 
 // Calculates A' * x
-void trans_multiply(Matrix& A, Vector&x, Vector& Atx) x{
+void trans_multiply(Matrix& A, Vector&x, Vector& Atx) {
   int m = A.rows(), n = A.cols();
   for (int i = 0; i < m; ++i) {
     for(int j = 0; j < n; ++j) {
