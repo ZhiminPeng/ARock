@@ -1,7 +1,6 @@
 /*************************************************
 Copyright (C) 2006-2011 Evgenii Rudnyi,
 http://Evgenii.Rudnyi.Ru/
-
 Implementations for matrix data file IO.
 */
 #include <fstream>
@@ -13,12 +12,12 @@ Implementations for matrix data file IO.
 using namespace std;
 
 // global functions for Matrix Market
-bool isDefined(const set<string> &opt, const string &name)
-{
-  if (opt.find(name) == opt.end())
+bool isDefined(const set<string> &opt, const string &name) {
+  if (opt.find(name) == opt.end()) {    
     return false;
-  else
+  } else {
     return true;	
+  }
 }
 
 void readHeader(istream &in, set<string> &opt)
