@@ -51,8 +51,9 @@ template <typename T>
 double l2_objective ( T& A, Vector& b, Vector& x, Vector& Atx, Parameters para ){
   double lambda = para.lambda;
   double tmp = 0.;
-  for ( unsigned i = 0; i < b.size(); ++i )
-    tmp += log ( 1. + exp ( -b[i] * Atx[i] ) );
+    for ( unsigned i = 0; i < b.size(); ++i ){
+      tmp += log ( 1. + exp ( -b[i] * Atx[i] ) );
+    }
   double nrm = norm(x, 2);
   return 0.5 * lambda * nrm * nrm + tmp / ( double ) ( b.size() );
 }
@@ -82,8 +83,9 @@ template <typename T>
 double l1_objective ( T& A, Vector& b, Vector& x, Vector& Atx,  Parameters para ){
   double lambda = para.lambda;
   double tmp = 0.;
-  for ( unsigned i = 0; i < b.size(); ++i )
+    for ( unsigned i = 0; i < b.size(); ++i ){
     tmp += log ( 1. + exp ( -b[i] * Atx[i] ) );
+    }
   double nrm = norm ( x, 1 );
   return lambda * nrm + tmp / ( double ) ( b.size() );
 }
