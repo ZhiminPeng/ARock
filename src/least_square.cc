@@ -34,19 +34,18 @@
  *     (double)
  *
  **********************************************************************/
-template <typename T>
+template <typename T>  // type T, it can be sparse matrix SpMat or Matrix
 double l2_objective(T& A,
                     Vector& b,
                     Vector& x,
                     Vector& Atx,
-                    Parameters &para)
-{
+                    Parameters &para) {
   double lambda = para.lambda;
   Vector grad_loss = Atx;
   sub(grad_loss, b);   // Atx - b
   double nrm_grad_loss = norm(grad_loss, 2);
   double nrm_x = norm(x, 2);
-  return 0.5*lambda*nrm_x*nrm_x + 0.5 * nrm_grad_loss * nrm_grad_loss;
+  return 0.5 * lambda * nrm_x * nrm_x + 0.5 * nrm_grad_loss * nrm_grad_loss;
 }
 
 template double l2_objective<Eigen::SparseMatrix<double, 1, int> >(
@@ -87,14 +86,13 @@ double l1_objective(T&          A,
 		    Vector&     b, 
 		    Vector&     x, 
 		    Vector&     Atx,  
-		    Parameters& para)
-{
+		    Parameters& para) {
   double lambda = para.lambda;
   Vector grad_loss = Atx;
   sub(grad_loss, b);  // calculates the gradient of the loss function Atx-b
   double nrm_grad_loss = norm(grad_loss, 2);
   double nrm_x = norm(x, 1);
-  return lambda*nrm_x + 0.5 * nrm_grad_loss * nrm_grad_loss;
+  return lambda * nrm_x + 0.5 * nrm_grad_loss * nrm_grad_loss;
 }
 
 template double l1_objective<Eigen::SparseMatrix<double, 1, int> >(
@@ -113,9 +111,7 @@ template double l1_objective<Matrix>(
 
 
 /************************************************************************
- * Finds the optimal solution for l2 regularized least square problem. 
- * The algorithm is parallel asynchronous stochastic coordinate descent
- * method.
+ * Solves the l2 regularized least square problem with ARock.
  *
  * Input:
  *     A: data matrix with size num_features x num_samples.
@@ -143,8 +139,7 @@ void l2_ls(T&          A,
 	   Vector&     x, 
 	   Vector&     Atx, 
 	   Vector&     Ab, 
-	   Parameters& para)
-{
+	   Parameters& para) {
   int num_features = A.rows();                  // total number of features 
   int num_samples  = A.cols();                  // total number of samples
   int num_threads  = omp_get_num_threads();     // total number of threads
@@ -152,17 +147,16 @@ void l2_ls(T&          A,
   int MAX_ITER     = para.MAX_EPOCH;            // maximum number of epochs
   double lambda    = para.lambda;               // regularization parameter
   bool flag        = para.flag;                 // output flag, if 1, output.
-  double STEP_SIZE = para.step_size; // 1./(lambda+2.);            // step size
+  double STEP_SIZE = para.step_size;            // step size
   int idx          = 0;                         // randomize index
   double S_i       = 0.;                        // initial S_i
   int local_m      = num_features/num_threads;  // number of updates for each core
   int local_start  = local_m * my_rank;         // starting index for local loop
   int local_end    = local_m * (my_rank+1);     // ending index for local loop
   double Ai_Atx    = 0.;                        // initial value for A(i, :)*Atx
-  //  Vector local_dAtx(num_samples, 0.);
   SpVec local_dAtx(num_samples);
   if(my_rank == num_threads - 1) local_end = num_features;
-  if(my_rank == 0 && flag) cout<<"l2_obj_" << num_threads << "= [ ";
+  if(my_rank == 0 && flag) std:cout<<"l2_obj_" << num_threads << "= [ ";
   int block_size = 50;
   int num_blocks = num_features/block_size;
   int i;
@@ -171,29 +165,27 @@ void l2_ls(T&          A,
   int block_id;
   Vector local_dx(num_features - (num_blocks-1)*block_size, 0.);  
   // main loop; each iteration represent an epoch
-  // double start = omp_get_wtime();
-  for(int itr=0;itr<MAX_ITER; itr++)
-  {
-    for(block=0;block<local_num_blocks;block++)
-    {
-      // generate a random block id
-      block_id = rand()%num_blocks;
-      // block_id = block;
-      // block_id = 1;
+  for(int itr = 0; itr < MAX_ITER; itr++) {
+    for(block = 0; block < local_num_blocks; block++) {
+      /*
+        Generate a random block id.
+        We first partition the variables into a fixed set of coordinates
+        (which we call blocks here). Then at each iteration, each thread
+        randomly picks a coordinate to update.
+      */
+      block_id = rand() % num_blocks;
+
       // calculate the starting index and ending index for the block
-      local_start = block_id*block_size;
+      local_start = block_id * block_size;
       local_end = (block_id + 1) * block_size;
-      if(block_id==num_blocks-1)
+      if(block_id == num_blocks-1) {
         local_end = num_features;
+      }
 
       // clean the data in local_delta_Atx
-      // fill(local_dAtx.begin(), local_dAtx.end(), 0.);
       local_dAtx.setZero();
       // local for loop for each thread
-      for(i=local_start; i<local_end; i++)
-      {
-        // step 1. generate a random index
-        // idx = rand()%num_features;  // select a random index
+      for(i = local_start; i < local_end; i++) {
         idx = i;
         // step 2. calculate S_i
         Ai_Atx = dot(A, Atx, idx);  // Ai_Atx = A(idx,:)*Atx;
@@ -201,29 +193,20 @@ void l2_ls(T&          A,
         local_dx[i-local_start] = STEP_SIZE*S_i;
         sub(local_dAtx, A, idx, STEP_SIZE*S_i);
       }
-      // ensure consistent write
-      //# pragma omp critical
-      {
-        // step 3. update x
-        for (i=local_start; i < local_end; ++i)
-        {
-          x[i] -=local_dx[i-local_start];
-        }
-        add(Atx, local_dAtx);
-        // step 4. update Atx based on the new x
-        // sub(Atx, A, idx, STEP_SIZE*S_i);
-      }
-    }
 
-    if(my_rank == 0 && flag) // use thread 0 for output objective value
-    {
-      cout<< l2_objective(A, b, x, Atx, para)<<endl;
+      // step 3. update x
+      for (i = local_start; i < local_end; ++i) {
+        x[i] -= local_dx[i-local_start];
+      }
+      add(Atx, local_dAtx);
     }
-    
   }
-  //  double end = omp_get_wtime();
-  //  cout<<"process " << my_rank <<" elapsed time is: " << end - start<<endl;
-  if(my_rank == 0 && flag) cout<<"];"<<endl;
+
+  if(my_rank == 0 && flag) {
+    std:cout << l2_objective(A, b, x, Atx, para)<<endl;
+  }
+  
+  if(my_rank == 0 && flag) std:cout<<"];"<<endl;
   return;
 }
 
@@ -246,7 +229,7 @@ template void l2_ls<Matrix >(
 
 /*****************************************************************************
  *
- * Calculates the optimal solution for l1 regularized least square (lasso)
+ * Solves the l1 regularized least square (Lasso)
  *  The algorithm is forward backward splitting.
  *
  * Input:
@@ -276,8 +259,7 @@ void l1_ls(T&          A,
 	   Vector&     x, 
 	   Vector&     Atx,
 	   Vector&     Ab, 
-	   Parameters& para)
-{
+	   Parameters& para) {
   int num_features     = A.rows();                   // number of features 
   int num_samples      = A.cols();                   // number of samples
   int num_threads      = omp_get_num_threads();      // number of threads 
@@ -297,7 +279,7 @@ void l1_ls(T&          A,
   double grad_i        = 0.;                         // ith component in the forward gradient
   double x_hat_i       = 0.;                         // ith component of x_hat
   if(my_rank == num_threads - 1) local_end = num_features; // offset the last block.
-  if(my_rank==0 && flag) cout<<"l1_obj_" << num_threads << "= [ ";
+  if(my_rank==0 && flag) std:cout<<"l1_obj_" << num_threads << "= [ ";
   // main loop; each iteration represent an epoch
   // Vector local_dAtx(num_samples, 0.);
   SpVec local_dAtx(num_samples);
@@ -366,11 +348,11 @@ void l1_ls(T&          A,
 
     if(my_rank == 0 && flag && itr%10==0) // output from thread 0.
     {
-      cout<< l1_objective(A, b, x, Atx, para)<<endl;
+      std:cout<< l1_objective(A, b, x, Atx, para)<<endl;
     }
   }
 
-  if(my_rank == 0 && flag) cout<<"];"<<endl;
+  if(my_rank == 0 && flag) std:cout<<"];"<<endl;
   return;
 }
 
