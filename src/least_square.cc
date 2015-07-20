@@ -15,6 +15,8 @@
 #include "least_square.h"
 
 
+
+
 /**********************************************************************
  *
  * Calculates objective value for l2 regularized least square 
@@ -278,36 +280,35 @@ void l1_ls(T&          A,
   int local_end        = local_m * (my_rank+1);      // ending index for local for loop
   double grad_i        = 0.;                         // ith component in the forward gradient
   double x_hat_i       = 0.;                         // ith component of x_hat
-  if(my_rank == num_threads - 1) local_end = num_features; // offset the last block.
-  if(my_rank==0 && flag) std:cout<<"l1_obj_" << num_threads << "= [ ";
+  if (my_rank == num_threads - 1) {
+    local_end = num_features; // offset the last block.
+  }
+  if (my_rank == 0 && flag) {
+    std:cout<<"l1_obj_" << num_threads << "= [ ";
+  }
   // main loop; each iteration represent an epoch
   // Vector local_dAtx(num_samples, 0.);
   SpVec local_dAtx(num_samples);
   int block_size = 50;
-  int num_blocks = num_features/block_size;
+  int num_blocks = num_features / block_size;
   int i;
-  int block=0;
-  int local_num_blocks = num_blocks/num_threads;
-  int block_id;
+  int block = 0;
+  int local_num_blocks = num_blocks / num_threads;
+  int block_id; 
   Vector local_dx(num_features - (num_blocks-1)*block_size, 0.);  
   // main loop; each iteration represent an epoch
-
-  for(int itr=0;itr<MAX_ITER; itr++)
-  {
-    for(block=0;block<local_num_blocks;block++)
-    {
+  for (int itr = 0; itr < MAX_ITER; itr++) {
+    for (block = 0; block < local_num_blocks; block++) {
       // generate a random block id
-      block_id = rand()%num_blocks;
-      // block_id = block;
-      // block_id = 1;
-      // calculate the starting index and ending index for the block
-      local_start = block_id*block_size;
-      local_end = (block_id + 1) * block_size;
-      if(block_id==num_blocks-1)
-        local_end = num_features;
+      block_id = rand() % num_blocks;
 
+      // calculate the starting index and ending index for the block
+      local_start = block_id * block_size;
+      local_end = (block_id + 1) * block_size;
+      if (block_id == num_blocks - 1) {
+        local_end = num_features;
+      }
       // clean the data in local_delta_Atx
-      // fill(local_dAtx.begin(), local_dAtx.end(), 0.);
       local_dAtx.setZero();
 
       // for loop for one epoch
@@ -332,17 +333,14 @@ void l1_ls(T&          A,
 	sub(local_dAtx, A, idx, STEP_SIZE*S_i);
       }
 
-      //# pragma omp critical
-      {
-        // step 3. update x
-        for (i=local_start; i < local_end; ++i)
-	  {
-	    x[i] -=local_dx[i-local_start];
-	  }
+
+      // step 3. update x
+      for (i=local_start; i < local_end; ++i) {
+        x[i] -=local_dx[i-local_start];
+      }
         add(Atx, local_dAtx);
         // step 4. update Atx based on the new x
-        // sub(Atx, A, idx, STEP_SIZE*S_i);
-      }
+
     }
     
 
