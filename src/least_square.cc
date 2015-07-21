@@ -139,8 +139,7 @@ void l2_ls(T&          A,
            Vector&     x,
            Vector&     Atx,
            Vector&     Ab,
-           Parameters& para)
-{
+           Parameters& para) {
     int num_features = A.rows();                    // total number of features
     int num_samples  = A.cols();                    // total number of samples
     int num_threads  = omp_get_num_threads();       // total number of threads
@@ -262,8 +261,7 @@ void l1_ls(T&          A,
            Vector&     x,
            Vector&     Atx,
            Vector&     Ab,
-           Parameters& para)
-{
+           Parameters& para) {
     int num_features     = A.rows();                     // number of features
     int num_samples      = A.cols();                     // number of samples
     int num_threads      = omp_get_num_threads();        // number of threads
