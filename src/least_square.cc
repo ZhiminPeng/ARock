@@ -65,7 +65,7 @@ template double l2_objective<Matrix>(Matrix&,
  *
  * Calculates the objective value for l1 regularized least square.
  * Input:
- *     A:      the data matrix with size num_features x num_samples; //======Ruqi: Does this 'x' mean '*'?======
+ *     A:      the data matrix with size num_features * num_samples;
  *     (type T, it can be sparse matrix (SpMat) or dense matrix (Matrix))
  *     b:      the observation labels;
  *     (Vector)
@@ -113,8 +113,8 @@ template double l1_objective<Matrix>(Matrix&,
  * method.
  *
  * Input:
- *     A: data matrix with size num_features x num_samples.           //======Ruqi: Does this 'x' mean '*'?======
- *        we store data in this way to calculate dot product more     //======Ruqi: '... more efficient' ?=======
+ *     A: data matrix with size num_features * num_samples.
+ *        we store data in this way to calculate dot product more efficient
  *     b: label (the label for the corresponding observation)
  *     (Vector)
  *     x: the unknown variables. Weights for different features.
@@ -172,7 +172,7 @@ void l2_ls(T&          A,
     // main loop; each iteration represents an epoch
     for (int itr = 0; itr < MAX_ITER; itr++) {
         for (block = 0; block < local_num_blocks; block++) {
-            // generate a random block id
+            // Step 1. generate a random block id
             block_id = rand() % num_blocks;
             // calculate the starting index and ending index for the block
             local_start = block_id * block_size;
@@ -184,7 +184,6 @@ void l2_ls(T&          A,
             local_dAtx.setZero();
             // local for loop for each thread
             for (i = local_start; i < local_end; i++) {
-                // Step 1. generate a random index   //======Ruqi: Maybe step 1 is to assign index?======
                 idx = i;
                 // Step 2. calculate S_i
                 Ai_Atx = dot(A, Atx, idx);  // Ai_Atx = A(idx,:) * Atx;
@@ -198,10 +197,10 @@ void l2_ls(T&          A,
             {
                 x[i] -= local_dx[i - local_start];
             }
+            // Step 4. update Atx based on the new x
             add(Atx, local_dAtx);
-            // Step 4. update Atx based on the new x  //======Ruqi: What does this 'step 4...' mean? Is this
-                                                      //comment located before 'add(...)' by any chance?======
-            // sub(Atx, A, idx, STEP_SIZE * S_i);
+            
+
         }
         
         // use thread 0 for output objective value
@@ -301,7 +300,7 @@ void l1_ls(T&          A,
     // main loop; each iteration represent an epoch
     for (int itr = 0; itr < MAX_ITER; itr++) {
         for (block = 0; block < local_num_blocks; block++) {
-            // generate a random block id
+            // Step 1. generate a random block id
             block_id = rand() % num_blocks;
             
             // calculate the starting index and ending index for the block
@@ -317,7 +316,6 @@ void l1_ls(T&          A,
             // for loop for one epoch
             for (i = local_start; i < local_end; i++) {
                 
-                // Step 1. generate a random index    //======Ruqi: Maybe step 1 is to assign index?======
                 idx = i;
                 
                 // Step 2. calculate forward step
@@ -335,13 +333,12 @@ void l1_ls(T&          A,
                 sub(local_dAtx, A, idx, STEP_SIZE * S_i);
             }
             
-            // step 3. update x    //======Ruqi: may the serial number be 5?======
+            // step 5. update x
             for (i = local_start; i < local_end; ++i){
                 x[i] -= local_dx[i - local_start];
             }
+            // step 6. update Atx based on the new x
             add(Atx, local_dAtx);
-            // step 4. update Atx based on the new x
-            // sub(Atx, A, idx, STEP_SIZE * S_i);
         }
         
         if (my_rank == 0 && flag && itr % 10 == 0) {
