@@ -39,8 +39,7 @@ double l2_objective(T& A,
                     Vector& b,
                     Vector& x,
                     Vector& Atx,
-                    Parameters &para)
-{
+                    Parameters &para) {
     double lambda = para.lambda;
     Vector grad_loss = Atx;
     sub(grad_loss, b);   // Atx - b
@@ -85,8 +84,7 @@ double l1_objective(T&          A,
                     Vector&     b,
                     Vector&     x,
                     Vector&     Atx,
-                    Parameters& para)
-{
+                    Parameters& para) {
     double lambda = para.lambda;
     Vector grad_loss = Atx;
     sub(grad_loss, b);  // calculates the gradient of the loss function Atx - b
@@ -192,14 +190,11 @@ void l2_ls(T&          A,
             }
             // ensure consistent write
             // Step 3. update x
-            for (i = local_start; i < local_end; ++i)
-            {
+            for (i = local_start; i < local_end; ++i) {
                 x[i] -= local_dx[i - local_start];
             }
             // Step 4. update Atx based on the new x
             add(Atx, local_dAtx);
-            
-
         }
         
         // use thread 0 for output objective value
@@ -332,7 +327,7 @@ void l1_ls(T&          A,
             }
             
             // step 5. update x
-            for (i = local_start; i < local_end; ++i){
+            for (i = local_start; i < local_end; ++i) {
                 x[i] -= local_dx[i - local_start];
             }
             // step 6. update Atx based on the new x
