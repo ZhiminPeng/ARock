@@ -403,15 +403,15 @@ void syn_l1_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para 
   double S_i       = 0.;
   double forward_step = 0.;
   double backward_step = 0.;
-  int local_m      = num_features ／ num_threads;
+  int local_m      = num_features / num_threads;
   int local_start  = local_m * my_rank;
   int local_end    = local_m * ( my_rank + 1 );
-  if ( my_rank == num_threads - 1 )｛
+  if ( my_rank == num_threads - 1 ){
       local_end = num_features;
-    ｝
-  if ( my_rank == 0 && flag )｛
+  }
+  if ( my_rank == 0 && flag ){
       cout<<"l1_obj_" << num_threads << "= [ ";
-    ｝
+  }
   double x_hat_i;
   SpVec local_dAtx ( num_samples ); // local vector to hold difference of Atx
   int block_size = 50;
