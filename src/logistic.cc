@@ -48,19 +48,19 @@
  *     (double)
  *******************************************************************/
 template <typename T>
-double l2_objective(T& A, Vector& b, Vector& x, Vector& Atx, Parameters para)
-{
+double l2_objective ( T& A, Vector& b, Vector& x, Vector& Atx, Parameters para ) {
   double lambda = para.lambda;
   double tmp = 0.;
-  for (unsigned i = 0; i < b.size(); ++i)
-    tmp += log(1. + exp(-b[i] * Atx[i]));
+    for ( unsigned i = 0; i < b.size(); ++i ) {
+      tmp += log ( 1. + exp ( -b[i] * Atx[i] ) );
+    }
   double nrm = norm(x, 2);
-  return 0.5 * lambda*nrm * nrm + tmp/(double)(b.size());
+  return 0.5 * lambda * nrm * nrm + tmp / ( double ) ( b.size() );
 }
 
-template double l2_objective<Eigen::SparseMatrix<double, 1, int> >(Eigen::SparseMatrix<double, 1, int>&, Vector&, Vector&, Vector& , Parameters);
+template double l2_objective <Eigen::SparseMatrix <double, 1, int> > ( Eigen::SparseMatrix <double, 1, int>&, Vector&, Vector&, Vector& , Parameters );
 
-template double l2_objective<Matrix>(Matrix&, Vector&, Vector&, Vector& , Parameters);
+template double l2_objective <Matrix> ( Matrix&, Vector&, Vector&, Vector& , Parameters );
 
 
 /********************************************************************
@@ -80,39 +80,36 @@ template double l2_objective<Matrix>(Matrix&, Vector&, Vector&, Vector& , Parame
  *     (double)
  *******************************************************************/
 template <typename T>
-double l1_objective(T& A, Vector& b, Vector& x, Vector& Atx,  Parameters para)
-{
+double l1_objective ( T& A, Vector& b, Vector& x, Vector& Atx,  Parameters para ) {
   double lambda = para.lambda;
   double tmp = 0.;
-  for (unsigned i = 0; i < b.size(); ++i)
-    tmp += log(1. + exp(-b[i] * Atx[i]));
-  double nrm = norm(x, 1);
-  return lambda*nrm + tmp/(double)(b.size());
+    for ( unsigned i = 0; i < b.size(); ++i ) {
+    tmp += log ( 1. + exp ( -b[i] * Atx[i] ) );
+    }
+  double nrm = norm ( x, 1 );
+  return lambda * nrm + tmp / ( double ) ( b.size() );
 }
 
-template double l1_objective<Eigen::SparseMatrix<double, 1, int> >(Eigen::SparseMatrix<double, 1, int>&, Vector&, Vector&, Vector& , Parameters);
+template double l1_objective <Eigen::SparseMatrix <double, 1, int> > ( Eigen::SparseMatrix <double, 1, int>&, Vector&, Vector&, Vector& , Parameters );
 
-template double l1_objective<Matrix>(Matrix&, Vector&, Vector&, Vector& , Parameters);
+template double l1_objective <Matrix> ( Matrix&, Vector&, Vector&, Vector& , Parameters );
 
 
 // calculate the forward gradient
-double forward_gradient(Matrix& A, Vector& b, Vector& Atx, int idx)
-{
+double forward_gradient ( Matrix& A, Vector& b, Vector& Atx, int idx ) {
   double result = 0.;
-  for (unsigned i = 0; i < A.cols(); ++i)
-    result += A(idx, i) * b[i]/(1.+exp(b[i]*Atx[i]));
+  for ( unsigned i = 0; i < A.cols(); ++i )
+    result += A ( idx, i ) * b[i] / ( 1.+exp ( b[i] * Atx[i] ) );
   return result;
 }
 
-double forward_gradient(SpMat& A, Vector& b, Vector& Atx, int idx)
-{
+double forward_gradient ( SpMat& A, Vector& b, Vector& Atx, int idx ) {
 
   double result = 0.;
   int i;
-  for (SpMat::InnerIterator it(A, idx); it; ++it)
-  {
+  for ( SpMat::InnerIterator it ( A, idx ); it; ++it ) {
     i = it.index();
-    result += it.value() * b[i]/(1.+exp(b[i]*Atx[i]));
+    result += it.value() * b[i] / ( 1.+exp ( b[i] * Atx[i] ) );
   }
   return result;
 }
@@ -140,8 +137,7 @@ double forward_gradient(SpMat& A, Vector& b, Vector& Atx, int idx)
  *
  ********************************************************************/
 template <typename T>
-void l2_logistic(T& A, Vector& b, Vector& x, Vector &Atx, Parameters para)
-{
+void l2_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para ) {
   int num_features = A.rows();
   int num_samples  = A.cols();
   int num_threads  = omp_get_num_threads();
@@ -149,94 +145,96 @@ void l2_logistic(T& A, Vector& b, Vector& x, Vector &Atx, Parameters para)
   int max_iter     = para.MAX_EPOCH;
   double lambda    = para.lambda;
   bool flag        = para.flag;
-  double step_size = 1./(lambda+1.);
+  double step_size = 1. / ( lambda+1. );
   int idx = 0;
   double S_i = 0.;
-  int local_m      = num_features/num_threads;
+  int local_m      = num_features / num_threads;
   int local_start  = local_m * my_rank;
-  int local_end    = local_m * (my_rank+1);
-  if(my_rank == num_threads - 1) local_end = num_features;
-  if(my_rank==0 && flag) cout<<"l2_obj_" << num_threads << "= [ ";
-  double Ai_Atx    = 0.;                        // initial value for A(i, :)*Atx
+  int local_end    = local_m * ( my_rank+1 );
+    if ( my_rank == num_threads - 1 ) {
+      local_end = num_features;
+    }
+    if ( my_rank == 0 && flag ) {
+      cout<<"l2_obj_" << num_threads << "= [ ";
+    }
+  double Ai_Atx = 0.;                        // initial value for A(i, :)*Atx
   //  Vector local_dAtx(num_samples, 0.);
-  SpVec local_dAtx(num_samples);
+  SpVec local_dAtx ( num_samples );
   int block_size = 50;
-  int num_blocks = num_features/block_size;
+  int num_blocks = num_features / block_size;
   int i;
-  int block=0;
-  int local_num_blocks = num_blocks/num_threads;
+  int block = 0;
+  int local_num_blocks = num_blocks / num_threads;
   int block_id;
-  Vector local_dx(num_features - (num_blocks-1)*block_size, 0.);  
+  Vector local_dx ( num_features - ( num_blocks-1 ) * block_size, 0. );
 
   // main loop, each iteration represent an epoch
-  for(int itr=0;itr<max_iter; itr++)
-  {
-    for(block=0;block<local_num_blocks;block++)
-    {
+  for ( int itr = 0;itr < max_iter; itr++ ) {
+    for ( block = 0;block < local_num_blocks;block++ ) {
       // generate a random block id
       
-      block_id = rand()%num_blocks;
+      block_id = rand() % num_blocks;
       // block_id = block;
       // block_id = 1;
       // calculate the starting index and ending index for the block
-      local_start = block_id*block_size;
-      local_end = (block_id + 1) * block_size;
-      if(block_id==num_blocks-1)
+      local_start = block_id * block_size;
+      local_end = ( block_id + 1 ) * block_size;
+        if ( block_id == num_blocks - 1 ) {
         local_end = num_features;
+        }
 
       // clean the data in local_delta_Atx
       // fill(local_dAtx.begin(), local_dAtx.end(), 0.);
       local_dAtx.setZero();
 
       // for loop for one epoch
-      for(i=local_start; i<local_end; i++)
-      {
+      for ( i = local_start; i < local_end; i++ ) {
         S_i = 0.;
         // idx = rand()%num_features; // select a random index
         idx = i;
         
-        S_i = forward_gradient(A, b, Atx, idx);
-        S_i = lambda * x[idx] - S_i/(double)(num_samples);
+        S_i = forward_gradient ( A, b, Atx, idx );
+        S_i = lambda * x[idx] - S_i / ( double ) ( num_samples );
         
-        local_dx[i-local_start] = step_size*S_i;
-        sub(local_dAtx, A, idx, step_size*S_i);
+        local_dx[i-local_start] = step_size * S_i;
+        sub ( local_dAtx, A, idx, step_size*S_i );
       }
     }
     // ensure consistent write
     // #pragma omp critical
     {
-      for (i=local_start; i < local_end; ++i)
-      {
-        x[i] -=local_dx[i-local_start];
+      for ( i=local_start; i < local_end; ++i ) {
+        x[i] -= local_dx[i-local_start];
       }
-      add(Atx, local_dAtx);
+      add ( Atx, local_dAtx );
     }
     
     
-    if(my_rank == 0 && flag && itr%10 == 0)
-    {
-      cout<< l2_objective(A, b, x, Atx, para)<<endl;
+    if ( my_rank == 0 && flag && itr % 10 == 0 ) {
+      cout<< l2_objective ( A, b, x, Atx, para )<<endl;
     }
     
   }
   
-  if(my_rank == 0 && flag) cout<<"];"<<endl;
+    if ( my_rank == 0 && flag ) {
+      cout<<"];"<<endl;
+    }
   return;
 }
 
-template void l2_logistic<Eigen::SparseMatrix<double, 1, int> >(
-    Eigen::SparseMatrix<double, 1, int>&,
+template void l2_logistic <Eigen::SparseMatrix <double, 1, int> > (
+    Eigen::SparseMatrix <double, 1, int>&,
     Vector&,
     Vector&,
     Vector&,
-    Parameters);
+    Parameters );
 
-template void l2_logistic<Matrix >(
+template void l2_logistic <Matrix> (
     Matrix&,
     Vector&,
     Vector&,
     Vector&,
-    Parameters);
+    Parameters );
 
 
 /***********************************************************************
@@ -263,7 +261,7 @@ template void l2_logistic<Matrix >(
  *
  *********************************************************************/
 template <typename T>
-void l1_logistic(T& A, Vector& b, Vector& x, Vector &Atx, Parameters para)
+void l1_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para )
 {
   int num_features = A.rows();
   int num_samples  = A.cols();
@@ -278,90 +276,92 @@ void l1_logistic(T& A, Vector& b, Vector& x, Vector &Atx, Parameters para)
   double S_i       = 0.;
   double forward_step = 0.;
   double backward_step = 0.;
-  int local_m      = num_features/num_threads;
+  int local_m      = num_features / num_threads;
   int local_start  = local_m * my_rank;
-  int local_end    = local_m * (my_rank+1);
-  if(my_rank == num_threads - 1) local_end = num_features;
-  if(my_rank==0 && flag) cout<<"l1_obj_" << num_threads << "= [ ";
+  int local_end    = local_m * ( my_rank + 1 );
+    if ( my_rank == num_threads - 1 ) {
+      local_end = num_features;
+    }
+    if ( my_rank == 0 && flag ) {
+      cout<<"l1_obj_" << num_threads << "= [ ";
+    }
   double x_hat_i;
-  SpVec local_dAtx(num_samples); // local vector to hold difference of Atx
+  SpVec local_dAtx ( num_samples ); // local vector to hold difference of Atx
   int block_size = 50;
-  int num_blocks = num_features/block_size;
+  int num_blocks = num_features / block_size;
   int i;
-  int block=0;
-  int local_num_blocks = num_blocks/num_threads;
+  int block = 0;
+  int local_num_blocks = num_blocks / num_threads;
   int block_id;
-  Vector local_dx(num_features - (num_blocks-1)*block_size, 0.);
+  Vector local_dx ( num_features - ( num_blocks - 1 ) * block_size, 0. );
   
   // main loop; each iteration represent an epoch
-  for(int itr=0;itr<max_iter; itr++)
-  {
-    for(block=0;block<local_num_blocks;block++)
-    {
+  for ( int itr = 0;itr < max_iter; itr++ ) {
+    for ( block = 0;block < local_num_blocks;block++ ) {
       // generate a random block id
-      block_id = rand()%num_blocks;
+      block_id = rand() % num_blocks;
       
       // calculate the starting index and ending index for the block
-      local_start = block_id*block_size;
-      local_end = (block_id + 1) * block_size;
-      if(block_id==num_blocks-1)
+      local_start = block_id * block_size;
+      local_end = ( block_id + 1 ) * block_size;
+        if ( block_id == num_blocks - 1 ) {
         local_end = num_features;
+        }
       
       // clean the data in local_delta_Atx
       local_dAtx.setZero();       
       // fill(local_dAtx.begin(), local_dAtx.end(), 0.); // use this if dense data is used
       
-      for(i=local_start; i<local_end; i++)
-      {
+      for ( i = local_start; i < local_end; i++ ) {
         S_i = 0.;
         // idx = rand()%num_features; // select a random index
         idx = i;
         x_hat_i = x[idx];
-        forward_step = forward_gradient(A, b, Atx, idx);
-        forward_step = x_hat_i + gamma * forward_step/num_samples; // x_i - gamma * grad_i 
-        backward_step = shrink(forward_step, gamma * lambda);
+        forward_step = forward_gradient ( A, b, Atx, idx );
+        forward_step = x_hat_i + gamma * forward_step / num_samples; // x_i - gamma * grad_i
+        backward_step = shrink ( forward_step, gamma * lambda );
         S_i = x_hat_i - backward_step;
-        local_dx[i-local_start] = step_size*S_i; // store the updated dx in local variable
-        sub(local_dAtx, A, idx, step_size*S_i);  // update the difference of Atx
+        local_dx[i-local_start] = step_size * S_i; // store the updated dx in local variable
+        sub ( local_dAtx, A, idx, step_size * S_i );  // update the difference of Atx
       }
       
       //# pragma omp critical
       {
         // step 3. update x
-        for (i=local_start; i < local_end; ++i)
-        {
-          x[i] -=local_dx[i-local_start];
+        for ( i = local_start; i < local_end; ++i ) {
+          x[i] -= local_dx[i - local_start];
         }
         
         // step 4. update Atx based on dAtx
-        add(Atx, local_dAtx); // add the difference to Atx
+        add ( Atx, local_dAtx ); // add the difference to Atx
       }
       
     }
 
-    if(my_rank == 0 && flag && itr%10 == 0 )
-    {
-      cout<< l1_objective(A, b, x, Atx, para)<<endl;
+    if ( my_rank == 0 && flag && itr % 10 == 0 ) {
+      cout<< l1_objective ( A, b, x, Atx, para )<<endl;
     }
   }
 
-  if(my_rank == 0 && flag) cout<<"];"<<endl;
+    if ( my_rank == 0 && flag ) {
+      cout<<"];"<<endl;
+    }
   return;
 }
 
-template void l1_logistic<Eigen::SparseMatrix<double, 1, int> >(
-    Eigen::SparseMatrix<double, 1, int>&,
+template void l1_logistic <Eigen::SparseMatrix <double, 1, int> > (
+    Eigen::SparseMatrix <double, 1, int>&,
     Vector&,
     Vector&,
     Vector &,
-    Parameters);
+    Parameters );
 
-template void l1_logistic<Matrix >(
+template void l1_logistic <Matrix> (
     Matrix&,
     Vector&,
     Vector&,
     Vector &,
-    Parameters);
+    Parameters );
 
 
 
@@ -389,8 +389,7 @@ template void l1_logistic<Matrix >(
  *
  *********************************************************************/
 template <typename T>
-void syn_l1_logistic(T& A, Vector& b, Vector& x, Vector &Atx, Parameters para)
-{
+void syn_l1_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para ) {
   int num_features = A.rows();
   int num_samples  = A.cols();
   int num_threads  = omp_get_num_threads();
@@ -404,93 +403,95 @@ void syn_l1_logistic(T& A, Vector& b, Vector& x, Vector &Atx, Parameters para)
   double S_i       = 0.;
   double forward_step = 0.;
   double backward_step = 0.;
-  int local_m      = num_features/num_threads;
+  int local_m      = num_features ／ num_threads;
   int local_start  = local_m * my_rank;
-  int local_end    = local_m * (my_rank+1);
-  if(my_rank == num_threads - 1) local_end = num_features;
-  if(my_rank==0 && flag) cout<<"l1_obj_" << num_threads << "= [ ";
+  int local_end    = local_m * ( my_rank + 1 );
+  if ( my_rank == num_threads - 1 )｛
+      local_end = num_features;
+    ｝
+  if ( my_rank == 0 && flag )｛
+      cout<<"l1_obj_" << num_threads << "= [ ";
+    ｝
   double x_hat_i;
-  SpVec local_dAtx(num_samples); // local vector to hold difference of Atx
+  SpVec local_dAtx ( num_samples ); // local vector to hold difference of Atx
   int block_size = 50;
-  int num_blocks = num_features/block_size;
+  int num_blocks = num_features / block_size;
   int i;
-  int block=0;
-  int local_num_blocks = num_blocks/num_threads;
+  int block = 0;
+  int local_num_blocks = num_blocks / num_threads;
   int block_id;
-  Vector local_dx(num_features - (num_blocks-1)*block_size, 0.);
+  Vector local_dx ( num_features - ( num_blocks - 1 ) * block_size, 0. );
   
   // main loop; each iteration represent an epoch
-  for(int itr=0;itr<max_iter; itr++)
-  {
-    for(block=0;block<local_num_blocks;block++)
-    {
+  for ( int itr = 0;itr < max_iter; itr++ ) {
+    for ( block = 0;block < local_num_blocks;block++ ) {
       // generate a random block id
-      block_id = rand()%num_blocks;
+      block_id = rand() % num_blocks;
       
       // calculate the starting index and ending index for the block
-      local_start = block_id*block_size;
+      local_start = block_id * block_size;
       local_end = (block_id + 1) * block_size;
-      if(block_id==num_blocks-1)
+        if ( block_id == num_blocks - 1 ) {
         local_end = num_features;
+        }
       
       // clean the data in local_delta_Atx
       local_dAtx.setZero();       
       // fill(local_dAtx.begin(), local_dAtx.end(), 0.); // use this if dense data is used
       
-      for(i=local_start; i<local_end; i++)
-      {
+      for ( i = local_start; i < local_end; i++ ) {
         S_i = 0.;
         // idx = rand()%num_features; // select a random index
         idx = i;
         x_hat_i = x[idx];
-        forward_step = forward_gradient(A, b, Atx, idx);
-        forward_step = x_hat_i + gamma * forward_step/num_samples; // x_i - gamma * grad_i 
-        backward_step = shrink(forward_step, gamma * lambda);
+        forward_step = forward_gradient ( A, b, Atx, idx );
+        forward_step = x_hat_i + gamma * forward_step / num_samples; // x_i - gamma * grad_i
+        backward_step = shrink ( forward_step, gamma * lambda );
         S_i = x_hat_i - backward_step;
-        local_dx[i-local_start] = step_size*S_i; // store the updated dx in local variable
-        sub(local_dAtx, A, idx, step_size*S_i);  // update the difference of Atx
+        local_dx[i-local_start] = step_size * S_i; // store the updated dx in local variable
+        sub ( local_dAtx, A, idx, step_size * S_i );  // update the difference of Atx
       }
       
       //# pragma omp critical
-#pragma omp barrier      
-      {
+#pragma omp barrier
+{
         // step 3. update x
-        for (i=local_start; i < local_end; ++i)
-        {
-          x[i] -=local_dx[i-local_start];
+        for ( i = local_start; i < local_end; ++i ) {
+          x[i] -= local_dx[i - local_start];
         }
 
         // step 4. update Atx based on dAtx
 #pragma omp critical
-        add(Atx, local_dAtx); // add the difference to Atx
+        add ( Atx, local_dAtx ); // add the difference to Atx
       }
       
     }
 #pragma omp barrier
 
-    if(my_rank == 0 && flag && itr%10 == 0 )
-    {
-      cout<< l1_objective(A, b, x, Atx, para)<<endl;
+    if ( my_rank == 0 && flag && itr % 10 == 0 ) {
+      cout<< l1_objective ( A, b, x, Atx, para )<<endl;
     }
   }
 
-  if(my_rank == 0 && flag) cout<<"];"<<endl;
+    if ( my_rank == 0 && flag ) {
+      cout<<"];"<<endl;
+    }
   return;
 }
 
-template void syn_l1_logistic<Eigen::SparseMatrix<double, 1, int> >(
-    Eigen::SparseMatrix<double, 1, int>&,
+template void syn_l1_logistic <Eigen::SparseMatrix <double, 1, int> > (
+    Eigen::SparseMatrix <double, 1, int>&,
     Vector&,
     Vector&,
     Vector&,
-    Parameters);
+    Parameters );
 
-template void syn_l1_logistic<Matrix >(
+template void syn_l1_logistic <Matrix> (
     Matrix&,
     Vector&,
     Vector&,
     Vector&,
-    Parameters);
+    Parameters );
 
 
 // end of the file
