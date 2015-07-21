@@ -345,7 +345,7 @@ void l1_ls(T&          A,
         }
     }
     
-    if (my_rank == 0 && flag){
+    if (my_rank == 0 && flag) {
         cout << "];" << endl;
     }
     return;
