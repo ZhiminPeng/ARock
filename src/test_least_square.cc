@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
         loadMarket(b, label_file_name);
         n = A.rows();
         // check if the size of the data match.
-        if (b.size()!= A.cols()) {
+        if (b.size() != A.cols()) {
             cout << "The size of A and b don't match!" << endl;
             return 0;
         }
@@ -73,7 +73,6 @@ int main(int argc, char *argv[]) {
         
         int num_features = A.rows();
         int num_samples = A.cols();
-        
         Vector Ab(num_features, 0.);
         multiply(A, b, Ab);
         
@@ -90,7 +89,6 @@ int main(int argc, char *argv[]) {
                 if (para.type == "l2") {
                     l2_ls(A, b, x, Atx, Ab, para);
                 }
-                
                 else if (para.type == "l1") {
                     l1_ls(A, b, x, Atx, Ab, para);
                 }
@@ -111,14 +109,12 @@ int main(int argc, char *argv[]) {
         Vector b;
         loadMarket(A, data_file_name);
         loadMarket(b, label_file_name);
-        
         n = A.rows();
-        // check the size of the data if match.
+        // check if the size of the data match.
         if (b.size() != A.cols()) {
             cout << "The size of A and b don't match!" << endl;
             return 0;
         }
-        
         Vector x(n, 0.);
         
         //-----------------------------------------------------------------------------------------------
@@ -130,7 +126,6 @@ int main(int argc, char *argv[]) {
          *****************************/
         int num_features = A.rows();
         int num_samples = A.cols();
-        
         Vector Ab(num_features, 0.);
         multiply(A, b, Ab);
         cout << "---------------------------------------------" << endl;
@@ -144,7 +139,7 @@ int main(int argc, char *argv[]) {
 # pragma omp parallel num_threads(thread_count) shared(A, b, x, Atx,  para)
             {
                 if (para.type == "l2") {
-                    l2_ls(A, b, x, Atx, Ab,  para);
+                    l2_ls(A, b, x, Atx, Ab, para);
                 }
                 else if (para.type == "l1") {
                     l1_ls(A, b, x, Atx, Ab, para);
@@ -152,7 +147,6 @@ int main(int argc, char *argv[]) {
             }
             double end = omp_get_wtime();
             result[thread_count-1][0] = end - start;
-            
             if (para.type == "l2") {
                 result[thread_count - 1][1] = l2_objective(A, b, x, Atx, para);
             }
@@ -173,19 +167,17 @@ int main(int argc, char *argv[]) {
         cout << endl;
     }
     cout << "---------------------------------------------" << endl;
-    
     return 0;
 }
 
 
-void exit_with_help()
-{
+void exit_with_help() {
     std::cout << "The usage for least_square is: \n \
     ./ least_square [options] \n \
-    -type      <set type for solver, can be l1 or l2, default l2> \n \
-    -lambda    <regularization parameter, default 1> \n \
-    -is_sparse <if the data format is sparse or not. default 1> \n \
-    -data      <the file name for the data file, matrix format features x samples> \n \
+    -type      <set type for solver, can be l1 or l2, default l2.> \n \
+    -lambda    <regularization parameter, default 1.> \n \
+    -is_sparse <if the data format is sparse or not. default 1.> \n \
+    -data      <the file name for the data file, matrix format features x samples.> \n \
     -label     <the file name for the labels.> \n \
     -nthread   <the total number of threads, default is set to 2.> \n \
     -epoch     <the total number of epoch, default is set to 10.> \n \
