@@ -125,11 +125,9 @@ int main(int argc, char *argv[]) {
         // start with asyn ls
         cout << "% start parallel ayn to solve " << para.type << " logistic regression!" << endl;
         
-        /*
-         ===========================
-         3. start the parallel test
-         ===========================  // Need I change "=" to "*"?  --Ruqi
-         */
+        /*****************************
+         3. start the parallel test 
+         *****************************/
         int num_features = A.rows();
         int num_samples = A.cols();
         
