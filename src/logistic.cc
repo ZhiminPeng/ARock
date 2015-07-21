@@ -80,7 +80,7 @@ template double l2_objective <Matrix> ( Matrix&, Vector&, Vector&, Vector& , Par
  *     (double)
  *******************************************************************/
 template <typename T>
-double l1_objective ( T& A, Vector& b, Vector& x, Vector& Atx,  Parameters para ){
+double l1_objective ( T& A, Vector& b, Vector& x, Vector& Atx,  Parameters para ) {
   double lambda = para.lambda;
   double tmp = 0.;
     for ( unsigned i = 0; i < b.size(); ++i ){
@@ -96,14 +96,14 @@ template double l1_objective <Matrix> ( Matrix&, Vector&, Vector&, Vector& , Par
 
 
 // calculate the forward gradient
-double forward_gradient ( Matrix& A, Vector& b, Vector& Atx, int idx ){
+ƒdouble forward_gradient ( Matrix& A, Vector& b, Vector& Atx, int idx ) {
   double result = 0.;
   for ( unsigned i = 0; i < A.cols(); ++i )
     result += A ( idx, i ) * b[i] / ( 1.+exp ( b[i] * Atx[i] ) );
   return result;
 }
 
-double forward_gradient ( SpMat& A, Vector& b, Vector& Atx, int idx ){
+double forward_gradient ( SpMat& A, Vector& b, Vector& Atx, int idx ) {
 
   double result = 0.;
   int i;
