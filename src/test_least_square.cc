@@ -3,8 +3,7 @@
  * Solve l1 regularized least square problem with asynchronous parallel
  * stochastic coordinate forward backward splitting method
  *
- *    min mu/2 |x|_2^2 + 1/m log(1 + exp(-b_i * a_i * x))  // How about changing it to min (mu/2) * (|x|_2^2) + 
-   (1/m) * (log(1 + exp(-b_i * a_i * x))) ? --Ruqi
+ *    min lambda * |x|_1 + 0.5 * |A * x - b| ^ 2
  *
  * Date Created:  02/20/2015
  * Date Modified: 02/24/2015
