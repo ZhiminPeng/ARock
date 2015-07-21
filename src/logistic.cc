@@ -48,17 +48,17 @@
  *     (double)
  *******************************************************************/
 template <typename T>
-double l2_objective ( T& A, Vector& b, Vector& x, Vector& Atx, Parameters para ){
+double l2_objective ( T& A, Vector& b, Vector& x, Vector& Atx, Parameters para ) {
   double lambda = para.lambda;
   double tmp = 0.;
-    for ( unsigned i = 0; i < b.size(); ++i ){
+    for ( unsigned i = 0; i < b.size(); ++i ) {
       tmp += log ( 1. + exp ( -b[i] * Atx[i] ) );
     }
   double nrm = norm(x, 2);
   return 0.5 * lambda * nrm * nrm + tmp / ( double ) ( b.size() );
 }
 
-template double l2_objective <Eigen::SparseMatrix <double, 1, int>> ( Eigen::SparseMatrix <double, 1, int>&, Vector&, Vector&, Vector& , Parameters );
+template double l2_objective <Eigen::SparseMatrix <double, 1, int> > ( Eigen::SparseMatrix <double, 1, int>&, Vector&, Vector&, Vector& , Parameters );
 
 template double l2_objective <Matrix> ( Matrix&, Vector&, Vector&, Vector& , Parameters );
 
@@ -83,7 +83,7 @@ template <typename T>
 double l1_objective ( T& A, Vector& b, Vector& x, Vector& Atx,  Parameters para ) {
   double lambda = para.lambda;
   double tmp = 0.;
-    for ( unsigned i = 0; i < b.size(); ++i ){
+    for ( unsigned i = 0; i < b.size(); ++i ) {
     tmp += log ( 1. + exp ( -b[i] * Atx[i] ) );
     }
   double nrm = norm ( x, 1 );
@@ -96,7 +96,7 @@ template double l1_objective <Matrix> ( Matrix&, Vector&, Vector&, Vector& , Par
 
 
 // calculate the forward gradient
-ƒdouble forward_gradient ( Matrix& A, Vector& b, Vector& Atx, int idx ) {
+double forward_gradient ( Matrix& A, Vector& b, Vector& Atx, int idx ) {
   double result = 0.;
   for ( unsigned i = 0; i < A.cols(); ++i )
     result += A ( idx, i ) * b[i] / ( 1.+exp ( b[i] * Atx[i] ) );
@@ -107,7 +107,7 @@ double forward_gradient ( SpMat& A, Vector& b, Vector& Atx, int idx ) {
 
   double result = 0.;
   int i;
-  for ( SpMat::InnerIterator it ( A, idx ); it; ++it ){
+  for ( SpMat::InnerIterator it ( A, idx ); it; ++it ) {
     i = it.index();
     result += it.value() * b[i] / ( 1.+exp ( b[i] * Atx[i] ) );
   }
@@ -137,7 +137,7 @@ double forward_gradient ( SpMat& A, Vector& b, Vector& Atx, int idx ) {
  *
  ********************************************************************/
 template <typename T>
-void l2_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para ){
+void l2_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para ) {
   int num_features = A.rows();
   int num_samples  = A.cols();
   int num_threads  = omp_get_num_threads();
@@ -151,12 +151,12 @@ void l2_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para ){
   int local_m      = num_features / num_threads;
   int local_start  = local_m * my_rank;
   int local_end    = local_m * ( my_rank+1 );
-  if ( my_rank == num_threads - 1 ) ｛
+    if ( my_rank == num_threads - 1 ) {
       local_end = num_features;
-    ｝
-  if ( my_rank == 0 && flag )｛
+    }
+    if ( my_rank == 0 && flag ) {
       cout<<"l2_obj_" << num_threads << "= [ ";
-    ｝
+    }
   double Ai_Atx = 0.;                        // initial value for A(i, :)*Atx
   //  Vector local_dAtx(num_samples, 0.);
   SpVec local_dAtx ( num_samples );
@@ -169,8 +169,8 @@ void l2_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para ){
   Vector local_dx ( num_features - ( num_blocks-1 ) * block_size, 0. );
 
   // main loop, each iteration represent an epoch
-  for ( int itr = 0;itr < max_iter; itr++ ){
-    for ( block = 0;block < local_num_blocks;block++ ){
+  for ( int itr = 0;itr < max_iter; itr++ ) {
+    for ( block = 0;block < local_num_blocks;block++ ) {
       // generate a random block id
       
       block_id = rand() % num_blocks;
@@ -179,16 +179,16 @@ void l2_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para ){
       // calculate the starting index and ending index for the block
       local_start = block_id * block_size;
       local_end = ( block_id + 1 ) * block_size;
-      if ( block_id == num_blocks - 1 )｛
+        if ( block_id == num_blocks - 1 ) {
         local_end = num_features;
-        ｝
+        }
 
       // clean the data in local_delta_Atx
       // fill(local_dAtx.begin(), local_dAtx.end(), 0.);
       local_dAtx.setZero();
 
       // for loop for one epoch
-      for ( i = local_start; i < local_end; i++ ){
+      for ( i = local_start; i < local_end; i++ ) {
         S_i = 0.;
         // idx = rand()%num_features; // select a random index
         idx = i;
@@ -203,22 +203,22 @@ void l2_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para ){
     // ensure consistent write
     // #pragma omp critical
     {
-      for ( i=local_start; i < local_end; ++i ){
+      for ( i=local_start; i < local_end; ++i ) {
         x[i] -= local_dx[i-local_start];
       }
       add ( Atx, local_dAtx );
     }
     
     
-    if ( my_rank == 0 && flag && itr % 10 == 0 ){
+    if ( my_rank == 0 && flag && itr % 10 == 0 ) {
       cout<< l2_objective ( A, b, x, Atx, para )<<endl;
     }
     
   }
   
-  if ( my_rank == 0 && flag )｛
+    if ( my_rank == 0 && flag ) {
       cout<<"];"<<endl;
-    ｝
+    }
   return;
 }
 
@@ -279,12 +279,12 @@ void l1_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para )
   int local_m      = num_features / num_threads;
   int local_start  = local_m * my_rank;
   int local_end    = local_m * ( my_rank + 1 );
-  if ( my_rank == num_threads - 1 )｛
+    if ( my_rank == num_threads - 1 ) {
       local_end = num_features;
-    ｝
-  if ( my_rank == 0 && flag )｛
+    }
+    if ( my_rank == 0 && flag ) {
       cout<<"l1_obj_" << num_threads << "= [ ";
-    ｝
+    }
   double x_hat_i;
   SpVec local_dAtx ( num_samples ); // local vector to hold difference of Atx
   int block_size = 50;
@@ -296,23 +296,23 @@ void l1_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para )
   Vector local_dx ( num_features - ( num_blocks - 1 ) * block_size, 0. );
   
   // main loop; each iteration represent an epoch
-  for ( int itr = 0;itr < max_iter; itr++ ){
-    for ( block = 0;block < local_num_blocks;block++ ){
+  for ( int itr = 0;itr < max_iter; itr++ ) {
+    for ( block = 0;block < local_num_blocks;block++ ) {
       // generate a random block id
       block_id = rand() % num_blocks;
       
       // calculate the starting index and ending index for the block
       local_start = block_id * block_size;
       local_end = ( block_id + 1 ) * block_size;
-      if ( block_id == num_blocks - 1 )｛
+        if ( block_id == num_blocks - 1 ) {
         local_end = num_features;
-        ｝
+        }
       
       // clean the data in local_delta_Atx
       local_dAtx.setZero();       
       // fill(local_dAtx.begin(), local_dAtx.end(), 0.); // use this if dense data is used
       
-      for ( i = local_start; i < local_end; i++ ){
+      for ( i = local_start; i < local_end; i++ ) {
         S_i = 0.;
         // idx = rand()%num_features; // select a random index
         idx = i;
@@ -328,7 +328,7 @@ void l1_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para )
       //# pragma omp critical
       {
         // step 3. update x
-        for ( i = local_start; i < local_end; ++i ){
+        for ( i = local_start; i < local_end; ++i ) {
           x[i] -= local_dx[i - local_start];
         }
         
@@ -338,14 +338,14 @@ void l1_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para )
       
     }
 
-    if ( my_rank == 0 && flag && itr % 10 == 0 ){
+    if ( my_rank == 0 && flag && itr % 10 == 0 ) {
       cout<< l1_objective ( A, b, x, Atx, para )<<endl;
     }
   }
 
-  if ( my_rank == 0 && flag )｛
+    if ( my_rank == 0 && flag ) {
       cout<<"];"<<endl;
-    ｝
+    }
   return;
 }
 
@@ -389,7 +389,7 @@ template void l1_logistic <Matrix> (
  *
  *********************************************************************/
 template <typename T>
-void syn_l1_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para ){
+void syn_l1_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para ) {
   int num_features = A.rows();
   int num_samples  = A.cols();
   int num_threads  = omp_get_num_threads();
@@ -423,23 +423,23 @@ void syn_l1_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para 
   Vector local_dx ( num_features - ( num_blocks - 1 ) * block_size, 0. );
   
   // main loop; each iteration represent an epoch
-  for ( int itr = 0;itr < max_iter; itr++ ){
-    for ( block = 0;block < local_num_blocks;block++ ){
+  for ( int itr = 0;itr < max_iter; itr++ ) {
+    for ( block = 0;block < local_num_blocks;block++ ) {
       // generate a random block id
       block_id = rand() % num_blocks;
       
       // calculate the starting index and ending index for the block
       local_start = block_id * block_size;
       local_end = (block_id + 1) * block_size;
-      if ( block_id == num_blocks - 1 )｛
+        if ( block_id == num_blocks - 1 ) {
         local_end = num_features;
-        ｝
+        }
       
       // clean the data in local_delta_Atx
       local_dAtx.setZero();       
       // fill(local_dAtx.begin(), local_dAtx.end(), 0.); // use this if dense data is used
       
-      for ( i = local_start; i < local_end; i++ ){
+      for ( i = local_start; i < local_end; i++ ) {
         S_i = 0.;
         // idx = rand()%num_features; // select a random index
         idx = i;
@@ -456,7 +456,7 @@ void syn_l1_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para 
 #pragma omp barrier
 {
         // step 3. update x
-        for ( i = local_start; i < local_end; ++i ){
+        for ( i = local_start; i < local_end; ++i ) {
           x[i] -= local_dx[i - local_start];
         }
 
@@ -468,14 +468,14 @@ void syn_l1_logistic ( T& A, Vector& b, Vector& x, Vector &Atx, Parameters para 
     }
 #pragma omp barrier
 
-    if ( my_rank == 0 && flag && itr % 10 == 0 ){
+    if ( my_rank == 0 && flag && itr % 10 == 0 ) {
       cout<< l1_objective ( A, b, x, Atx, para )<<endl;
     }
   }
 
-  if ( my_rank == 0 && flag )｛
+    if ( my_rank == 0 && flag ) {
       cout<<"];"<<endl;
-    ｝
+    }
   return;
 }
 
