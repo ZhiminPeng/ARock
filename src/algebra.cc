@@ -24,7 +24,7 @@ double shrink(double x, double t) {
     if (x > t) {
         return x - t;
     }
-    else if (x <- t) {
+    else if (x < -t) {
         return x + t;
     }
     else {
