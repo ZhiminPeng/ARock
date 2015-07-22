@@ -124,14 +124,14 @@ int main ( int argc, char *argv[] ) {
     n = A.rows();
     // check the size of the data if match.
     if ( b.size() != A.cols() ) {
-      cout<<"The size of A and b don't match!"<<endl;
+      std::cout<<"The size of A and b don't match!"<<endl;
       return 0;
     }
     Vector x ( n, 0. );
     
     //----------------------------------------------------
     // start with asyn ls
-    cout<<"% start parallel ayn to solve "<<para.type<<" logistic regression!"<<endl;
+    std::cout<<"% start parallel ayn to solve "<<para.type<<" logistic regression!"<<endl;
     
     /*
       ===========================
@@ -141,15 +141,16 @@ int main ( int argc, char *argv[] ) {
     int num_features = A.rows();
     int num_samples = A.cols();
 
-    cout<<"---------------------------------------------"<<endl;
-    cout<<"The problem has "<<num_samples<<" samples, "<<num_features<<" features."<<endl;
-    cout<<"The data matrix is sparse, "<<"lambda is: "<<para.lambda<<"."<<endl;
+    std::cout<<"---------------------------------------------"<<endl;
+    std::cout<<"The problem has "<<num_samples<<" samples, "<<num_features<<" features."<<endl;
+    std::cout<<"The data matrix is sparse, "<<"lambda is: "<<para.lambda<<"."<<endl;
     
     for ( thread_count = 1; thread_count <= total_num_threads; thread_count = thread_count * 2 ) {
       Vector x ( n, 0. );
       Vector Atx ( num_samples, 0. );
       double start = omp_get_wtime();
-# pragma omp parallel num_threads ( thread_count ) shared ( A, b, x, Atx, para ) {
+# pragma omp parallel num_threads ( thread_count ) shared ( A, b, x, Atx, para )
+      {
         if ( para.type == "l2" ) {
           l2_logistic ( A, b, x, Atx, para );
         }
@@ -175,11 +176,11 @@ int main ( int argc, char *argv[] ) {
     Vector b;
     loadMarket ( A, data_file_name );
     loadMarket ( b, label_file_name );
-
+    
     n = A.rows();
     // check the size of the data if match.
     if ( b.size() != A.cols() ) {
-      cout<<"The size of A and b don't match!"<<endl;
+      std::cout<<"The size of A and b don't match!"<<endl;
       return 0;
     }
     
@@ -187,7 +188,7 @@ int main ( int argc, char *argv[] ) {
     
     //----------------------------------------------------
     // start with asyn ls
-    cout<<"% start parallel ayn to solve "<<para.type<<" logistic regression!"<<endl;
+    std::cout<<"% start parallel ayn to solve "<<para.type<<" logistic regression!"<<endl;
     
     
     /*
@@ -199,15 +200,16 @@ int main ( int argc, char *argv[] ) {
     int num_samples = A.cols();
 
 
-    cout<<"---------------------------------------------"<<endl;
-    cout<<"The problem has "<<num_samples<<" samples, "<<num_features<<" features."<<endl;
-    cout<<"The data matrix is dense, "<<"lambda is: "<<para.lambda<<"."<<endl;
+    std::cout<<"---------------------------------------------"<<std::endl;
+    std::cout<<"The problem has "<<num_samples<<" samples, "<<num_features<<" features."<<std::endl;
+    std::cout<<"The data matrix is dense, "<<"lambda is: "<<para.lambda<<"."<<std::endl;
 
     for ( thread_count = 1; thread_count <= total_num_threads; thread_count = thread_count * 2 ) {
       Vector x ( n, 0. );
       Vector Atx ( num_samples, 0. );
       double start = omp_get_wtime();
-# pragma omp parallel num_threads ( thread_count ) shared ( A, b, x, Atx, para ) {
+# pragma omp parallel num_threads ( thread_count ) shared ( A, b, x, Atx, para )
+      {
         if ( para.type == "l2" ) {
           l2_logistic ( A, b, x, Atx, para );
         }
@@ -216,9 +218,9 @@ int main ( int argc, char *argv[] ) {
         }
       }
       double end = omp_get_wtime();
-      // cout<<"% time: " << end - start << " sec."<<endl;
+      // std::cout<<"% time: " << end - start << " sec."<<std::endl;
       result[thread_count-1][0] = end - start;
-
+      
       if ( para.type == "l2" ) {
         result[thread_count-1][1] = l2_objective ( A, b, x, Atx, para );
       }
@@ -227,18 +229,19 @@ int main ( int argc, char *argv[] ) {
       }
     }
   }
-  cout<<"---------------------------------------------"<<endl;
-  cout<<setw(15)<<"# cores";
-  cout<<setw(15)<<"time(s)";
-  cout<<setw(15)<<"objective";
-  cout<<endl;
+
+  std::cout<<"---------------------------------------------"<<std::endl;
+  std::cout<<setw(15)<<"# cores";
+  std::cout<<setw(15)<<"time(s)";
+  std::cout<<setw(15)<<"objective";
+  std::cout<<std::endl;
   for ( int i = 0;i < total_num_threads;i++ ) {
-    cout<<setw(15)<<setprecision(2)<<i+1;
-    cout<<setw(15)<<setprecision(2)<<scientific<<result[i][0];
-    cout<<setw(15)<<setprecision(2)<<result[i][1];
-    cout<<endl;
+    std::cout<<setw(15)<<setprecision(2)<<i+1;
+    std::cout<<setw(15)<<setprecision(2)<<scientific<<result[i][0];
+    std::cout<<setw(15)<<setprecision(2)<<result[i][1];
+    std::cout<<std::endl;
   }
-  cout<<"---------------------------------------------"<<endl;
+  std::cout<<"---------------------------------------------"<<std::endl;
   
   return 0;
 }
