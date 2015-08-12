@@ -9,13 +9,14 @@
  * l1 regularized:
  *    min lambda |x|_1 + 1/m log(1 + exp(-b_i* a_i * x) )
  *
- *Date Created:  02/20/2015
- *Date Modified: 02/24/2015
- *               02/25/2015 (modified the input arguments, no ordering)
- *               02/28/2015 (fixed some bugs, check all of the code)
- *               06/10/2015 (add some comments)
- *Author:        Zhimin Peng, Yangyang Xu, Ming Yan, Wotao Yin
- *Contact:       zhimin.peng@math.ucla.edu
+ * Date Created:  02/20/2015
+ * Date Modified: 02/24/2015
+ *                02/25/2015 (modified the input arguments, no ordering)
+ *                02/28/2015 (fixed some bugs, check all of the code)
+ *                06/10/2015 (add some comments)
+ *                08/11/2015 (fixed the output format)
+ * Author:        Zhimin Peng, Yangyang Xu, Ming Yan, Wotao Yin
+ * Contact:       zhimin.peng@math.ucla.edu
  *
  **********************************************************************/
 
@@ -30,93 +31,33 @@
 #include "logistic.h"
 #include "MarketIO.h"
 
-// function for printing help message;
-void exit_with_help()
-{
-  std::cout<< "The usage for logistic regression is: \n \
-            ./logistic [options] \n \
-              -type      <regularization type, can be l1 or l2, default l2>\n \
-              -lambda    <regularization paramter, default 1> \n \
-              -is_sparse <if the data format is sparse or not. default 0> \n \
-              -data      <the file name for the data file, matrix format features x samples>\n \
-              -label     <the file name for the labels.> \n \
-              -nthread   <the total number of threads, default is set to 2.> \n \
-              -epoch     <the total number of epoch, default is set to 10> \n \
-              -nthread   <the total number of threads, default is total number of threads in the system.> \n \
-              -flag      <the flag for output default 0.>" <<std::endl;
-  abort();
-}
+// display help message when the input is not recognized
+void exit_with_help();
 
-void parse_input_argv ( Parameters& para,
-                      int argc,
-                      char *argv[],
-                      std::string& data_file_name,
-                      std::string& label_file_name,
-                      int& total_num_threads ) {
-  for ( int i = 1; i < argc; ++i ) {
-      if ( argv[i][0] != '-' ) {
-          break;
-      }
-      if ( ++i >= argc ) {
-      exit_with_help();
-      }
-      if ( std::string ( argv[i-1] ) == "-type" ) {
-      para.type = argv[i];
-      }
-      else if ( std::string ( argv[i-1] ) == "-lambda" ) {
-      para.lambda = atof ( argv[i] );
-      }
-      else if ( std::string ( argv[i-1] ) == "-is_sparse" ) {
-      para.is_sparse = atoi ( argv[i] );
-      }
-      else if ( std::string ( argv[i-1] ) == "-epoch" ) {
-      para.MAX_EPOCH = atoi ( argv[i] );
-      }
-      else if ( std::string ( argv[i-1] ) == "-data" ){
-      data_file_name = std::string ( argv[i] );
-      }
-      else if ( std::string ( argv[i-1] ) == "-label" ) {
-      label_file_name = std::string ( argv[i] );
-      }
-      else if ( std::string ( argv[i-1] ) == "-nthread" ) {
-      total_num_threads = atoi ( argv[i] ) ;
-      }
-      else if ( std::string ( argv[i-1] ) == "-flag" ) {
-      para.flag = atoi ( argv[i] );
-      }
-      else {
-      exit_with_help();
-      }
-  }
-  return;
-}
+// parse the input arguments
+void parse_input_argv(Parameters&, int, char**, std::string&, std::string&, int&);
 
 // main function
 int main ( int argc, char *argv[] ) {
   // int thread_count = strtol ( argv[1], NULL, 10 );
-  int thread_count;
-  int m = 1000, n = 10;
-  unsigned seed = 1;
-  // unsigned int nthreads = std::thread::hardware_concurrency();
-  int total_num_threads = 2;
+
+  int n = 1;
+  int n_threads_to_use = 1;  
+  int max_n_threads_by_user = 2;
   
-  /*
-     =======================
-       1. set up arguments
-     =======================
-  */
+  /*************************
+    1. set up arguments
+   *************************/
   Parameters para;
   std::string data_file_name;
   std::string label_file_name;  
-  parse_input_argv ( para, argc, argv, data_file_name, label_file_name, total_num_threads );
-  vector <vector <double> > result ( total_num_threads, vector <double> (2) );
+  parse_input_argv ( para, argc, argv, data_file_name, label_file_name, max_n_threads_by_user );
+  vector<vector<double> > result(max_n_threads_by_user, vector<double>(2));
 
-  /*
-     =======================
-      2. load data from file
-     =======================
-  */
-  if ( para.is_sparse ) {
+  /**************************
+    2. load data from file
+   **************************/
+  if (para.is_sparse) {
     SpMat A;
     Vector b;
     loadMarket ( A, data_file_name );
@@ -145,11 +86,11 @@ int main ( int argc, char *argv[] ) {
     std::cout<<"The problem has "<<num_samples<<" samples, "<<num_features<<" features."<<endl;
     std::cout<<"The data matrix is sparse, "<<"lambda is: "<<para.lambda<<"."<<endl;
     
-    for ( thread_count = 1; thread_count <= total_num_threads; thread_count = thread_count * 2 ) {
+    for ( n_threads_to_use = 1; n_threads_to_use <= max_n_threads_by_user; n_threads_to_use = n_threads_to_use * 2 ) {
       Vector x ( n, 0. );
       Vector Atx ( num_samples, 0. );
       double start = omp_get_wtime();
-# pragma omp parallel num_threads ( thread_count ) shared ( A, b, x, Atx, para )
+# pragma omp parallel num_threads ( n_threads_to_use ) shared ( A, b, x, Atx, para )
       {
         if ( para.type == "l2" ) {
           l2_logistic ( A, b, x, Atx, para );
@@ -160,12 +101,12 @@ int main ( int argc, char *argv[] ) {
       }
       double end = omp_get_wtime();
       
-      result[thread_count-1][0] = end - start;
+      result[n_threads_to_use-1][0] = end - start;
       if ( para.type == "l2" ) {
-        result[thread_count-1][1] = l2_objective ( A, b, x, Atx, para );
+        result[n_threads_to_use-1][1] = l2_objective ( A, b, x, Atx, para );
       }
       if ( para.type == "l1" ) {
-        result[thread_count-1][1] = l1_objective ( A, b, x, Atx, para );
+        result[n_threads_to_use-1][1] = l1_objective ( A, b, x, Atx, para );
       }
     }
 
@@ -204,11 +145,11 @@ int main ( int argc, char *argv[] ) {
     std::cout<<"The problem has "<<num_samples<<" samples, "<<num_features<<" features."<<std::endl;
     std::cout<<"The data matrix is dense, "<<"lambda is: "<<para.lambda<<"."<<std::endl;
 
-    for ( thread_count = 1; thread_count <= total_num_threads; thread_count = thread_count * 2 ) {
+    for ( n_threads_to_use = 1; n_threads_to_use <= max_n_threads_by_user; n_threads_to_use = n_threads_to_use * 2 ) {
       Vector x ( n, 0. );
       Vector Atx ( num_samples, 0. );
       double start = omp_get_wtime();
-# pragma omp parallel num_threads ( thread_count ) shared ( A, b, x, Atx, para )
+# pragma omp parallel num_threads ( n_threads_to_use ) shared ( A, b, x, Atx, para )
       {
         if ( para.type == "l2" ) {
           l2_logistic ( A, b, x, Atx, para );
@@ -219,29 +160,91 @@ int main ( int argc, char *argv[] ) {
       }
       double end = omp_get_wtime();
       // std::cout<<"% time: " << end - start << " sec."<<std::endl;
-      result[thread_count-1][0] = end - start;
+      result[n_threads_to_use-1][0] = end - start;
       
       if ( para.type == "l2" ) {
-        result[thread_count-1][1] = l2_objective ( A, b, x, Atx, para );
+        result[n_threads_to_use-1][1] = l2_objective ( A, b, x, Atx, para );
       }
       if ( para.type == "l1" ) {
-        result[thread_count-1][1] = l1_objective ( A, b, x, Atx, para );
+        result[n_threads_to_use-1][1] = l1_objective ( A, b, x, Atx, para );
       }
     }
   }
 
-  std::cout<<"---------------------------------------------"<<std::endl;
-  std::cout<<setw(15)<<"# cores";
-  std::cout<<setw(15)<<"time(s)";
-  std::cout<<setw(15)<<"objective";
-  std::cout<<std::endl;
-  for ( int i = 0;i < total_num_threads;i++ ) {
-    std::cout<<setw(15)<<setprecision(2)<<i+1;
-    std::cout<<setw(15)<<setprecision(2)<<scientific<<result[i][0];
-    std::cout<<setw(15)<<setprecision(2)<<result[i][1];
-    std::cout<<std::endl;
+  std::cout << "---------------------------------------------" << std::endl;
+  std::cout << setw(15) << "# cores used";
+  std::cout << setw(15) << "time(s)";
+  std::cout << setw(15) << "final obj";
+  std::cout << std::endl;
+  for (int i = 1; i <= max_n_threads_by_user; i *= 2) {
+    std::cout << setw(15) << setprecision(2) << i;
+    std::cout << setw(15) << setprecision(2) << scientific << result[i - 1][0];
+    std::cout << setw(15) << setprecision(2) << result[i - 1][1];
+    std::cout << std::endl;
   }
-  std::cout<<"---------------------------------------------"<<std::endl;
+  std::cout << "---------------------------------------------" << std::endl;
   
   return 0;
+}
+
+
+// function for printing help message;
+void exit_with_help()
+{
+  std::cout<< "The usage for logistic regression is: \n \
+            ./logistic [options] \n \
+              -type      <regularization type, can be l1 or l2, default l2>\n \
+              -lambda    <regularization paramter, default 1> \n \
+              -is_sparse <if the data format is sparse or not. default 0> \n \
+              -data      <the file name for the data file, matrix format features x samples>\n \
+              -label     <the file name for the labels.> \n \
+              -nthread   <the total number of threads, default is set to 2.> \n \
+              -epoch     <the total number of epoch, default is set to 10> \n \
+              -nthread   <the total number of threads, default is total number of threads in the system.> \n \
+              -flag      <the flag for output default 0.>" <<std::endl;
+  abort();
+}
+
+void parse_input_argv ( Parameters& para,
+                      int argc,
+                      char *argv[],
+                      std::string& data_file_name,
+                      std::string& label_file_name,
+                      int& max_n_threads_by_user ) {
+  for ( int i = 1; i < argc; ++i ) {
+      if ( argv[i][0] != '-' ) {
+          break;
+      }
+      if ( ++i >= argc ) {
+      exit_with_help();
+      }
+      if ( std::string ( argv[i-1] ) == "-type" ) {
+      para.type = argv[i];
+      }
+      else if ( std::string ( argv[i-1] ) == "-lambda" ) {
+      para.lambda = atof ( argv[i] );
+      }
+      else if ( std::string ( argv[i-1] ) == "-is_sparse" ) {
+      para.is_sparse = atoi ( argv[i] );
+      }
+      else if ( std::string ( argv[i-1] ) == "-epoch" ) {
+      para.MAX_EPOCH = atoi ( argv[i] );
+      }
+      else if ( std::string ( argv[i-1] ) == "-data" ){
+      data_file_name = std::string ( argv[i] );
+      }
+      else if ( std::string ( argv[i-1] ) == "-label" ) {
+      label_file_name = std::string ( argv[i] );
+      }
+      else if ( std::string ( argv[i-1] ) == "-nthread" ) {
+      max_n_threads_by_user = atoi ( argv[i] ) ;
+      }
+      else if ( std::string ( argv[i-1] ) == "-flag" ) {
+      para.flag = atoi ( argv[i] );
+      }
+      else {
+      exit_with_help();
+      }
+  }
+  return;
 }
