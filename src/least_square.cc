@@ -1,5 +1,4 @@
 /*************************************************************************************
- *
  * ARock for solving l1 or l2 regularized least square problem.
  * Date Created:  02/26/2015
  * Date Modified: 02/28/2015 (added lots of comments, moved shrink function to algebra.h)
@@ -106,9 +105,7 @@ template double l1_objective<Matrix>(Matrix&,
                                      Parameters&);
 
 /************************************************************************
- * Finds the optimal solution for l2 regularized least square problem. 
- * The algorithm is parallel asynchronous stochastic coordinate descent
- * method.
+ * Solve the l2 regularized least square problem with ARock.
  *
  * Input:
  *     A: data matrix with size num_features * num_samples.
@@ -226,8 +223,7 @@ template void l2_ls<Matrix >(Matrix&,
 
 /*****************************************************************************
  *
- * Calculates the optimal solution for l1 regularized least square (lasso)
- *  The algorithm is forward backward splitting.
+ * Solves the l1 regularized least square problem with ARock
  *
  * Input:
  *     A: data matrix; matrix size is num_features x num_samples

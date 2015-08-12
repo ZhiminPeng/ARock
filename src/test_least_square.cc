@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
     std::cout << "The problem has " << num_samples << " samples, " << num_features << " features." << std::endl;
     std::cout << "The data matrix is sparse, " << "lambda is: " << para.lambda << "." << std::endl;
     std::cout << "---------------------------------------------" << std::endl;
-    
+
     // start ARock to solve least square problem
     std::cout << "% start ARock to solve: " << std::endl;
     std::cout << "    " << para.type << " regularized least square problem!" << std::endl;

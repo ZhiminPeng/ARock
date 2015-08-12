@@ -1,7 +1,7 @@
 /******************************************************************************
  * implementations for linear algebra operations, including functions such as
- * norm, dot, sub, add, multiply and so on. Please refer to include/algebra.h for more
- * details of the functions.
+ * norm, dot, sub, add, multiply and so on.
+ * Please refer to include/algebra.h for more details of the functions.
  *
  * Date Created:  01/29/2015
  * Date Modified: 01/29/2015
@@ -22,13 +22,11 @@
 // Shrinkage function
 double shrink(double x, double t) {
     if (x > t) {
-        return x - t;
-    }
-    else if (x < -t) {
-        return x + t;
-    }
-    else {
-        return 0.;
+      return x - t;
+    } else if (x < -t) {
+      return x + t;
+    } else {
+      return 0.;
     }
 }
 
