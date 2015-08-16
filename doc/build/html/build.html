@@ -74,7 +74,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="">Build package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#download-arock">Download ARock</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#building-arock">Building ARock</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#testing-the-installation">Testing the installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-on-linux-and-unix">Testing on Linux and Unix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-on-macrosoft-windows">Testing on Macrosoft Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="core.html">Matrices and Linear Algebra</a><ul>
@@ -135,7 +136,7 @@
             
   <div class="section" id="build-package">
 <h1>Build package<a class="headerlink" href="#build-package" title="Permalink to this headline">¶</a></h1>
-<p>ARock&#8217;s build system relies on <a class="reference external" href="https://www.gnu.org/software/make/">GNU make</a>. It can be easily build on Linux and Unix environments, and, at least in theory, various versions of Microsoft Windows. A relative up-to-date C++ compiler (e.g., gcc &gt;= 4.1) is required in all cases.</p>
+<p>ARock&#8217;s build system relies on <a class="reference external" href="https://www.gnu.org/software/make/">GNU make</a>. It can be easily build on Linux and Unix environments, and various versions of Microsoft Windows. A relative up-to-date C++ compiler (e.g., gcc &gt;= 4.1) is required in all cases.</p>
 <div class="section" id="download-arock">
 <h2>Download ARock<a class="headerlink" href="#download-arock" title="Permalink to this headline">¶</a></h2>
 <p>The ARock package can be downloaded from the following link:</p>
@@ -156,8 +157,8 @@ r_logistic     [solver for regularized logistic regression]
 </pre></div>
 </div>
 </div>
-<div class="section" id="testing-the-installation">
-<h2>Testing the installation<a class="headerlink" href="#testing-the-installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="testing-on-linux-and-unix">
+<h2>Testing on Linux and Unix<a class="headerlink" href="#testing-on-linux-and-unix" title="Permalink to this headline">¶</a></h2>
 <p>Once ARock has been successfully compiled, it is a good idea to verify that the executable files are functioning properly. You can go to the test folder by the following:</p>
 <div class="highlight-python"><div class="highlight"><pre>cd test
 </pre></div>
@@ -170,6 +171,43 @@ r_logistic     [solver for regularized logistic regression]
 <div class="highlight-python"><div class="highlight"><pre>../bin/r_logistic -data rcv1_data.mtx -label rcv1_label.mtx -epoch 10 -is_sparse 1 -nthread 2 -type l1
 </pre></div>
 </div>
+</div>
+<div class="section" id="testing-on-macrosoft-windows">
+<h2>Testing on Macrosoft Windows<a class="headerlink" href="#testing-on-macrosoft-windows" title="Permalink to this headline">¶</a></h2>
+<p>Tested platform: Windows 8, 64-bit, Visual Studio 2013 Desktop Version</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Click on <tt class="docutils literal"><span class="pre">ARock\visual_studio\ARock_visual_studio.sln</span></tt>
+to launch.</p>
+</li>
+<li><p class="first">If you are running a different version of Visual Studio, you must
+set the Platform Toolset to the current version.</p>
+<p>For example, for &#8220;Visual Studio 2012&#8221;, for the projects &#8220;least_squares&#8221;
+and &#8220;logistic_regression&#8221;, go to
+<tt class="docutils literal"><span class="pre">Properties-&gt;Configuration</span> <span class="pre">Properties-&gt;Platform</span> <span class="pre">Toolset</span></tt>
+and select <tt class="docutils literal"><span class="pre">Visual</span> <span class="pre">Studio</span> <span class="pre">2012</span> <span class="pre">(v110)</span></tt></p>
+</li>
+<li><p class="first">For each project, under <tt class="docutils literal"><span class="pre">Properties-&gt;Debugging-&gt;Command</span> <span class="pre">Arguments</span></tt>
+you will find the following options on one line:</p>
+<div class="highlight-python"><div class="highlight"><pre>-nthread 2
+-epoch 10
+-lambda 1.0
+-type l1
+-data &quot;$(SolutionDir)\..\test\rcv1_data.mtx&quot;
+-label &quot;$(SolutionDir)\..\test\rcv1_label.mtx&quot;
+-is_sparse 1
+</pre></div>
+</div>
+</li>
+</ol>
+<blockquote>
+<div>Check <a class="reference external" href="http://www.math.ucla.edu/~zhimin.peng/ARock/opt/regression.html">here</a>
+if you want to make changes to these options. For example, if your
+PC has 4 cores, then you can use -nthread 4 to use all the 4 cores.</div></blockquote>
+<ol class="arabic simple" start="4">
+<li>Both Debug and Release configurations are available.</li>
+</ol>
+</div></blockquote>
 </div>
 </div>
 
