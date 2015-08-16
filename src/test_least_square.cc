@@ -236,7 +236,7 @@ void parse_input_argv(Parameters& para,
       para.step_size = atof(argv[i]);
     }
     else if (std::string(argv[i - 1]) == "-is_sparse") {
-      para.is_sparse = atoi(argv[i]);
+      para.is_sparse = bool(atoi(argv[i]));
     }
     else if (std::string(argv[i - 1]) == "-epoch") {
       para.MAX_EPOCH = atoi(argv[i]);
@@ -251,7 +251,7 @@ void parse_input_argv(Parameters& para,
       max_n_threads_by_user = atoi(argv[i]);
     }
     else if (std::string(argv[i - 1]) == "-flag") {
-      para.flag = atoi(argv[i]);
+      para.flag = bool(atoi(argv[i]));
     }
     else
       exit_with_help();

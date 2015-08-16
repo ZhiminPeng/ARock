@@ -141,7 +141,7 @@ void sub(SpVec& a, SpMat& A, int row, double scalar) {
 // Implements a = a - scalar * A(row, :)
 void sub(SpVec& a, Matrix& A, int row, double scalar) {
     double result = 0.;
-    for (unsigned i = 0; i < a.size(); ++i)
+    for (int i = 0; i < a.size(); ++i)
         a.coeffRef(i) -= scalar * A(row, i);
 }
 
@@ -203,8 +203,8 @@ void print(Vector& x) {
 
 // Prints a dense matrix
 void print(Matrix &A) {
-    for (int i = 0; i < A.rows(); ++i) {
-        for (int j = 0; j < A.cols(); ++j) {
+    for (unsigned i = 0; i < A.rows(); ++i) {
+        for (unsigned j = 0; j < A.cols(); ++j) {
             std::cout << setw(10) << A(i, j);
         }
         std::cout << endl;

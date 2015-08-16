@@ -31,20 +31,20 @@ void readHeader ( istream &in, set<string> &opt ) {
   string word;
   while (in2) {
     in2 >> word;
-      for ( int i = 0; i < word.size(); ++i ) {
+      for ( unsigned i = 0; i < word.size(); ++i ) {
       word[i] = tolower ( word[i] );
       }
     opt.insert ( word );
   }
-    while ( in.peek() == '%' ) {
+  while ( in.peek() == '%' ) {
     getline ( in, line );
-    }
-    if ( !isDefined ( opt, "matrix" ) ) {
+  }
+  if ( !isDefined ( opt, "matrix" ) ) {
     throw MatrixError::ReadError ( "header: Not a matrix" );
-    }
-    if ( !isDefined ( opt, "real" ) ) {
+  }
+  if ( !isDefined ( opt, "real" ) ) {
     throw MatrixError::ReadError ( "header: Not a real matrix" );
-    }
+  }
 }
 
 void writeComment ( ostream &out ) {
@@ -66,7 +66,8 @@ void Vector::read ( istream &in ) {
   else {
     throw MatrixError::ReadError ( "Matrix: Not general, neither symmetric" );
   }
-  size_t n, m, nnz;
+  size_t n, m;
+  size_t nnz = 0;
   in >> n >> m;
     if ( IsSymmetric && ( m != n ) ) {
     throw MatrixError::ReadError ( stringAndTwoNumbers ( "Matrix: Symmetric but number of columns is not equal to number of rows", n, m ) );
@@ -83,10 +84,10 @@ void Vector::read ( istream &in ) {
 
 void Vector::readData ( istream &in, size_t n, bool IsSymmetric ) {
   double val;
-  for ( int j = 0; j < n; ++j ) {
+  for ( unsigned j = 0; j < n; ++j ) {
     in >> val;
       if ( !in ) {
-      throw MatrixError::ReadError ( "Matrix: End of file too early" );
+        throw MatrixError::ReadError ( "Matrix: End of file too early" );
       }
     ( *this )[j] = val;
   }
@@ -107,7 +108,8 @@ void Matrix::read ( istream &in ) {
   else {
     throw MatrixError::ReadError ( "Matrix: Not general, neither symmetric" );
   }
-  size_t n, m, nnz;
+  size_t n, m;
+  size_t nnz = 0;
   in >> n >> m;
     if ( IsSymmetric && ( m != n ) ) {
     throw MatrixError::ReadError ( stringAndTwoNumbers ( "Matrix: Symmetric but number of columns is not equal to number of rows", n, m ) );
@@ -131,26 +133,26 @@ void Matrix::read ( istream &in ) {
 void Matrix::readData ( istream &in, size_t n, size_t m, bool IsSymmetric ) {
   double val;
   if ( IsSymmetric ) {
-      for ( int j = 0; j < n; ++j ) {
-      for ( int i = j; i < n; ++i ) {
-        in >> val;
+      for ( size_t j = 0; j < n; ++j ) {
+        for ( size_t i = j; i < n; ++i ) {
+          in >> val;
           if ( !in ) {
-          throw MatrixError::ReadError ( "Matrix: Symmetric and end of file too early" );
+            throw MatrixError::ReadError ( "Matrix: Symmetric and end of file too early" );
           }
-        ( *this ) ( j, i ) = ( *this )( i, j ) = val;
-      }
+          ( *this ) ( j, i ) = ( *this )( i, j ) = val;
+        }
       }
   }
   else {
-      for ( int i = 0; i < m; ++i ) {
-      for ( int j = 0; j < n; ++j ) {
+    for ( size_t i = 0; i < m; ++i ) {
+      for ( size_t j = 0; j < n; ++j ) {
         in >> val;
-          if ( !in ) {
+        if ( !in ) {
           throw MatrixError::ReadError ( "Matrix: End of file too early" );
-          }
+        }
         ( *this ) ( j, i ) = val;
       }
-      }
+    }
   }
   return;
 }
@@ -161,7 +163,7 @@ void Matrix::readDataSparse ( istream &in, size_t nnz, bool IsSymmetric ) {
   double val;
   size_t i, j;
   fill ( begin(), end(), 0. );
-  for ( int k = 0; k < nnz; ++k ) {
+  for ( size_t k = 0; k < nnz; ++k ) {
     in >> i >> j >> val;
       if ( !in ) {
       throw MatrixError::ReadError ( "Matrix: End of file too early" );
