@@ -4,21 +4,22 @@ Introduction
 
 Overview
 ===========
-ARock is an asynchronous parallel C++ library for solving equations and optimization problems on shared memory systems. The package is based on the `Eigen <http://eigen.tuxfamily.org/index.php?title=Main_Page>`_ Library for matrix and vector operations. OpenMP is used for parallelization. ARock includes async-parallel implementation of
+ARock is an asynchronous parallel C++ library for solving equations and optimization problems on shared memory systems. The package calls `Eigen <http://eigen.tuxfamily.org/index.php?title=Main_Page>`_ Library for matrix and vector operations. OpenMP is used for parallelization. ARock includes the async-parallel implementations of
 
-  * Relaxed Jacobi method for solving linear equations (coming soon...);
-  * Newton method for solving nonlinear equations (coming soon...);
-  * Operator splitting method for minimizing regularized empirical risk minimization problems (LASSO, logistic regression);
-  * Alternating direction method of multipliers (ADMM) for consensus and decentralized optimization problems (coming soon...).
+  * the relaxed Jacobi method for solving linear equations (coming soon...);
+  * the Newton's method for solving nonlinear equations (coming soon...);
+  * the operator splitting method for regularized empirical risk minimization problems (LASSO, logistic regression);
+  * the alternating direction method of multipliers (ADMM) for consensus and decentralized optimization problems (coming soon...).
 
   
-ARock currently supports C++ interface. Python, Julia and Matlab interfaces are under development.
+ARock is written in C++. Python, Julia and Matlab interfaces are under development.
     
 
 Dependencies
 ==============
 * Functioning C++ compilers (`gcc <https://www.gnu.org/software/gcc/releases.html>`_ )
 * `GNU make <https://www.gnu.org/software/make/>`_
+* or Microsoft Visual C++
 
 
 References
@@ -28,7 +29,7 @@ References
 
 License and copyright
 =====================
-Except for the Eigen library header files, All files distributed with ARock are made available under the `New BSD license <http://www.opensource.org/licenses/bsd-license.php>`_,
+Except for the Eigen library header files, all files distributed with ARock are made available under the `New BSD license <http://www.opensource.org/licenses/bsd-license.php>`_,
 which states::
 
     Redistribution and use in source and binary forms, with or without

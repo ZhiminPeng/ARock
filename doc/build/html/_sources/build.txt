@@ -1,5 +1,5 @@
-Build package
-==================
+Download, Build and Run
+=======================
 ARock's build system relies on `GNU make <https://www.gnu.org/software/make/>`_. It can be easily build on Linux and Unix environments, and various versions of Microsoft Windows. A relative up-to-date C++ compiler (e.g., gcc >= 4.1) is required in all cases.
 
 
@@ -41,9 +41,9 @@ To test ARock for solving l1 regularized logistic regression problem, run the fo
 
 
 
-Testing on Macrosoft Windows
+Testing on Microsoft Windows
 ----------------------------
-Tested platform: Windows 8, 64-bit, Visual Studio 2013 Desktop Version
+Tested platform: Windows 8, 64-bit, Visual Studio Express 2013 Desktop Version
 
   1. Click on ``ARock\visual_studio\ARock_visual_studio.sln``
      to launch.
@@ -72,3 +72,5 @@ Tested platform: Windows 8, 64-bit, Visual Studio 2013 Desktop Version
    PC has 4 cores, then you can use -nthread 4 to use all the 4 cores.
 
   4. Both Debug and Release configurations are available.
+
+  5. Press F5 or Ctrl-F5 to run the code.
