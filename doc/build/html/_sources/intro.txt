@@ -7,7 +7,7 @@ Overview
 ARock is an asynchronous parallel C++ library for solving equations and optimization problems on shared memory systems. The package calls `Eigen <http://eigen.tuxfamily.org/index.php?title=Main_Page>`_ Library for matrix and vector operations. OpenMP is used for parallelization. ARock includes the async-parallel implementations of
 
   * the relaxed Jacobi method for solving linear equations (coming soon...);
-  * the Newton's method for solving nonlinear equations (coming soon...);
+  * Newton's method for solving nonlinear equations (coming soon...);
   * the operator splitting method for regularized empirical risk minimization problems (LASSO, logistic regression);
   * the alternating direction method of multipliers (ADMM) for consensus and decentralized optimization problems (coming soon...).
 
