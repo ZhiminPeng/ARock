@@ -26,16 +26,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\WangMo%27s PC\Desktop\src\algebra.cc">
+    <ClCompile Include="..\..\src\algebra.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\WangMo%27s PC\Desktop\src\least_square.cc">
+    <ClCompile Include="..\..\src\least_square.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\WangMo%27s PC\Desktop\src\matrices.cc">
+    <ClCompile Include="..\..\src\matrices.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\WangMo%27s PC\Desktop\src\test_least_square.cc">
+    <ClCompile Include="..\..\src\test_least_square.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -159,10 +159,10 @@
     <ClInclude Include="..\..\..\..\WangMo%27s PC\Desktop\include\matrices.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\WangMo%27s PC\Desktop\src\algebra.cc" />
-    <ClCompile Include="..\..\..\..\WangMo%27s PC\Desktop\src\least_square.cc" />
-    <ClCompile Include="..\..\..\..\WangMo%27s PC\Desktop\src\matrices.cc" />
-    <ClCompile Include="..\..\..\..\WangMo%27s PC\Desktop\src\test_least_square.cc" />
+    <ClCompile Include="..\..\src\algebra.cc" />
+    <ClCompile Include="..\..\src\least_square.cc" />
+    <ClCompile Include="..\..\src\matrices.cc" />
+    <ClCompile Include="..\..\src\test_least_square.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

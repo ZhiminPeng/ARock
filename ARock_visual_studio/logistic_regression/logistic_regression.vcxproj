@@ -154,15 +154,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\WangMo%27s PC\Desktop\src\algebra.cc" />
-    <ClCompile Include="..\..\..\..\WangMo%27s PC\Desktop\src\logistic.cc" />
-    <ClCompile Include="..\..\..\..\WangMo%27s PC\Desktop\src\matrices.cc" />
-    <ClCompile Include="..\..\..\..\WangMo%27s PC\Desktop\src\test_logistic.cc" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\..\..\..\WangMo%27s PC\Desktop\include\algebra.h" />
     <ClInclude Include="..\..\..\..\WangMo%27s PC\Desktop\include\logistic.h" />
     <ClInclude Include="..\..\..\..\WangMo%27s PC\Desktop\include\matrices.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\algebra.cc" />
+    <ClCompile Include="..\..\src\logistic.cc" />
+    <ClCompile Include="..\..\src\matrices.cc" />
+    <ClCompile Include="..\..\src\test_logistic.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
