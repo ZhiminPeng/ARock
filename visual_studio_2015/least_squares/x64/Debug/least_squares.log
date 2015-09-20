@@ -1,0 +1,40 @@
+﻿生成启动时间为 9/20/2015 8:57:43 PM。
+     1>项目“C:\Users\candice\Desktop\ARock\visual_studio_2015\least_squares\least_squares.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /IC:\Users\candice\Desktop\ARock\visual_studio_2015\\..\include /ZI /nologo /W3 /WX- /sdl /Od /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /openmp /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TP /errorReport:prompt ..\..\src\algebra.cc ..\..\src\least_square.cc ..\..\src\matrices.cc ..\..\src\test_least_square.cc
+         test_least_square.cc
+     1>c:\users\candice\desktop\arock\src\test_least_square.cc(135): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+     1>c:\users\candice\desktop\arock\src\test_least_square.cc(151): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+     1>c:\users\candice\desktop\arock\src\test_least_square.cc(152): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+     1>c:\users\candice\desktop\arock\src\test_least_square.cc(239): warning C4800: “int”: 将值强制为布尔值“true”或“false”(性能警告)
+     1>c:\users\candice\desktop\arock\src\test_least_square.cc(254): warning C4800: “int”: 将值强制为布尔值“true”或“false”(性能警告)
+         matrices.cc
+     1>c:\users\candice\desktop\arock\src\matrices.cc(73): warning C4244: “参数”: 从“size_t”转换到“const double”，可能丢失数据
+     1>c:\users\candice\desktop\arock\src\matrices.cc(115): warning C4244: “参数”: 从“size_t”转换到“const double”，可能丢失数据
+         least_square.cc
+     1>c:\users\candice\desktop\arock\src\least_square.cc(138): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+         c:\users\candice\desktop\arock\src\least_square.cc(221): note: 参见对正在编译的函数 模板 实例化“void l2_ls<Matrix>(Matrix &,Vector &,Vector &,Vector &,Vector &,Parameters &)”的引用
+     1>c:\users\candice\desktop\arock\src\least_square.cc(139): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+     1>c:\users\candice\desktop\arock\src\least_square.cc(256): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+         c:\users\candice\desktop\arock\src\least_square.cc(347): note: 参见对正在编译的函数 模板 实例化“void l1_ls<Matrix>(Matrix &,Vector &,Vector &,Vector &,Vector &,Parameters &)”的引用
+     1>c:\users\candice\desktop\arock\src\least_square.cc(257): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+         algebra.cc
+     1>c:\users\candice\desktop\arock\src\algebra.cc(73): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+     1>c:\users\candice\desktop\arock\src\algebra.cc(74): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+     1>c:\users\candice\desktop\arock\src\algebra.cc(225): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+     1>c:\users\candice\desktop\arock\src\algebra.cc(248): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+     1>c:\users\candice\desktop\arock\src\algebra.cc(249): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+     1>c:\users\candice\desktop\arock\src\algebra.cc(268): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+     1>c:\users\candice\desktop\arock\src\algebra.cc(294): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+         正在生成代码...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\candice\Desktop\ARock\visual_studio_2015\x64\Debug\least_squares.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\candice\Desktop\ARock\visual_studio_2015\x64\Debug\least_squares.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\candice\Desktop\ARock\visual_studio_2015\x64\Debug\least_squares.lib" /MACHINE:X64 x64\Debug\algebra.obj
+         x64\Debug\least_square.obj
+         x64\Debug\matrices.obj
+         x64\Debug\test_least_square.obj
+         least_squares.vcxproj -> C:\Users\candice\Desktop\ARock\visual_studio_2015\x64\Debug\least_squares.exe
+     1>已完成生成项目“C:\Users\candice\Desktop\ARock\visual_studio_2015\least_squares\least_squares.vcxproj”(Build 个目标)的操作。
+
+已成功生成。
+
+已用时间 00:00:04.95
