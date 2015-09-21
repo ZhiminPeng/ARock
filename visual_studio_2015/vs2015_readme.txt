@@ -26,4 +26,4 @@ Tested platform: Windows 8, 64-bit, Visual Studio 2015 Desktop Version
    if you want to make changes to these options. For example, if your
    PC has 4 cores, then you can use -nthread 4 to use all the 4 cores.
 
-4. Both Debug and Release configurations are available.
+4. Both Debug and Release configurations are available, but under x64.
