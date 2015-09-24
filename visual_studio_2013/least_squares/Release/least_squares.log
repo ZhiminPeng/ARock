@@ -1,0 +1,23 @@
+﻿Build started 2015/9/24 19:57:54.
+     1>Project "C:\Users\菲儿\Desktop\Documents\GitHub\ARock\visual_studio_2013\least_squares\least_squares.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         A:\VS2013\安装文件\VC\bin\CL.exe /c /I"C:\Users\菲儿\Desktop\Documents\GitHub\ARock\visual_studio_2013\\..\include" /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /openmp /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\src\algebra.cc ..\..\src\least_square.cc ..\..\src\matrices.cc ..\..\src\test_least_square.cc
+         algebra.cc
+         least_square.cc
+         matrices.cc
+         test_least_square.cc
+     1>..\..\src\test_least_square.cc(239): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>..\..\src\test_least_square.cc(254): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+       Link:
+         A:\VS2013\安装文件\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\菲儿\Desktop\Documents\GitHub\ARock\visual_studio_2013\Release\least_squares.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\菲儿\Desktop\Documents\GitHub\ARock\visual_studio_2013\Release\least_squares.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\菲儿\Desktop\Documents\GitHub\ARock\visual_studio_2013\Release\least_squares.lib" /MACHINE:X86 /SAFESEH Release\algebra.obj
+         Release\least_square.obj
+         Release\matrices.obj
+         Release\test_least_square.obj
+         Generating code
+         Finished generating code
+         least_squares.vcxproj -> C:\Users\菲儿\Desktop\Documents\GitHub\ARock\visual_studio_2013\Release\least_squares.exe
+     1>Done Building Project "C:\Users\菲儿\Desktop\Documents\GitHub\ARock\visual_studio_2013\least_squares\least_squares.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:22.52
