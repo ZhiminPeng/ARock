@@ -57,6 +57,7 @@ int main(int argc, char *argv[]) {
    **************************/
   // TODO: need a smart way to combine the sparse, and dense case together
   // current, we have lots of duplicated code
+  std::cout << "% Our default test files are large, so it will take a while to load." << std::endl;
   if (para.is_sparse) {
     SpMat A;
     Vector b;
@@ -194,7 +195,7 @@ void exit_with_help()
   std::cout<< "The usage for logistic regression is: \n \
             ./logistic [options] \n \
               -type      <regularization type, can be l1 or l2, default l2>\n \
-              -lambda    <regularization paramter, default 1> \n \
+              -lambda    <regularization parameter, default 1> \n \
               -is_sparse <if the data format is sparse or not. default 0> \n \
               -data      <the file name for the data file, matrix format features x samples>\n \
               -label     <the file name for the labels.> \n \

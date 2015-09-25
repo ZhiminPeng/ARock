@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
   /*****************************
      2. load data from file
   *****************************/
-  std::cout << "% Start to load data!" << std::endl;
+  std::cout << "% Our default test files are large, so it will take a while to load." << std::endl;
   if (para.is_sparse) {
     /******************************************************************
      * Except for the types of A and b and some screen output,
