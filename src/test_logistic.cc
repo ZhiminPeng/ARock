@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
    **************************/
   // TODO: need a smart way to combine the sparse, and dense case together
   // current, we have lots of duplicated code
-  std::cout << "% Start to load data! This may take a few minutes if you use our test." << std::endl;
+  std::cout << "% Our default test files are large, so it will take a while to load." << std::endl;
   if (para.is_sparse) {
     SpMat A;
     Vector b;
