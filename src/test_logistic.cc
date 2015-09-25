@@ -39,7 +39,7 @@ void parse_input_argv(Parameters&, int, char**, std::string&, std::string&, int&
 // main function
 int main(int argc, char *argv[]) {
 
-  int n                     = 1;
+  size_t n                  = 1;
   int n_threads_to_use      = 1;  
   int max_n_threads_by_user = 2;
   
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
    **************************/
   // TODO: need a smart way to combine the sparse, and dense case together
   // current, we have lots of duplicated code
-  std::cout << "% Our default test files are large, so it will take a while to load." << std::endl;
+  std::cout << "% Load data files ... (our default test files are large, so it will take a while)." << std::endl;
   if (para.is_sparse) {
     SpMat A;
     Vector b;
@@ -71,25 +71,27 @@ int main(int argc, char *argv[]) {
     }
     Vector x(n, 0.);
     
-    // start with asyn ls
-    std::cout << "% start parallel ayn to solve "
-              << para.type
-              << " logistic regression!"
-              << std::endl;
-    
     /****************************
       3. start the parallel test
      ****************************/
-    int num_features = A.rows();
-    int num_samples = A.cols();
+    size_t num_features = A.rows();
+	size_t num_samples = A.cols();
 
     std::cout << "---------------------------------------------\n";
     std::cout << "The problem has " << num_samples
               << " samples, " << num_features << " features.\n";
     std::cout << "The data matrix is sparse, "
               << "lambda is: " << para.lambda << ".\n";
-    
-    for (n_threads_to_use = 1; n_threads_to_use <= max_n_threads_by_user; n_threads_to_use = n_threads_to_use * 2) {
+	std::cout << "---------------------------------------------\n";
+
+	// start with asyn ls
+	std::cout << "% start ARock to solve "
+		<< para.type
+		<< " logistic regression!"
+		<< std::endl;
+
+	for (n_threads_to_use = 1; n_threads_to_use <= max_n_threads_by_user; n_threads_to_use = n_threads_to_use * 2) {
+		std::cout << "%% run ARock with " << n_threads_to_use << " threads ... ";
       Vector x(n, 0.);
       Vector Atx(num_samples, 0.);
       double start = omp_get_wtime();
@@ -103,7 +105,8 @@ int main(int argc, char *argv[]) {
         }
       }
       double end = omp_get_wtime();
-      
+	  std::cout << "done." << std::endl;
+
       result[n_threads_to_use - 1][0] = end - start;
       if (para.type == "l2") {
         result[n_threads_to_use - 1][1] = l2_objective(A, b, x, Atx, para);
@@ -138,8 +141,8 @@ int main(int argc, char *argv[]) {
       3. start the parallel test
       ===========================
     */
-    int num_features = A.rows();
-    int num_samples = A.cols();
+    size_t num_features = A.rows();
+	size_t num_samples = A.cols();
 
 
     std::cout<<"---------------------------------------------"<<std::endl;
@@ -184,7 +187,8 @@ int main(int argc, char *argv[]) {
     std::cout << std::endl;
   }
   std::cout << "---------------------------------------------" << std::endl;
-  
+  std::cout << "press any key to exit...";
+
   return 0;
 }
 
@@ -226,7 +230,7 @@ void parse_input_argv ( Parameters& para,
       para.lambda = atof ( argv[i] );
     }
     else if ( std::string ( argv[i-1] ) == "-is_sparse" ) {
-      para.is_sparse = bool (atoi ( argv[i] ) );
+      para.is_sparse = (atoi ( argv[i] ) != 0);
     }
     else if ( std::string ( argv[i-1] ) == "-epoch" ) {
       para.MAX_EPOCH = atoi ( argv[i] );
@@ -241,7 +245,7 @@ void parse_input_argv ( Parameters& para,
       max_n_threads_by_user = atoi ( argv[i] ) ;
     }
     else if ( std::string ( argv[i-1] ) == "-flag" ) {
-      para.flag = bool(atoi ( argv[i] ));
+      para.flag = (atoi ( argv[i] ) != 0);
     }
     else {
       exit_with_help();
