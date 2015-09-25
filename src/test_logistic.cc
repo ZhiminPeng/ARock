@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
     n = A.rows();
     // check the size of the data if match.
     if (b.size() != A.cols()) {
-      std::cout<<"The size of A and b don't match!"<<std::endl;
+      std::cout << "The size of A and b don't match!" << std::endl;
       return 0;
     }
     Vector x(n, 0.);
