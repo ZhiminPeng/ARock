@@ -1,3 +1,3 @@
 ## Asynchronous parallel coordinate method (ARock)
 
-Here is the [documentation](http://www.math.ucla.edu/~zhimin.peng/ARock/index.html).
+This is no longer mantained. The new codebase is [here](https://github.com/uclaopt/TMAC).
